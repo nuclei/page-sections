@@ -1,0 +1,48 @@
+{
+  "name": "page-sections",
+  "version": "0.0.1",
+  "description": "A simple section solution for your single page or landing page. Vanilla js, no framework dependencies, small footprint.",
+  "main": "dist/page-sections.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "eslint src/page-sections.js && ./node_modules/.bin/wct --skip-selenium-install",
+    "travis": "./node_modules/.bin/wct ",
+    "cover": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha test/*.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nuclei/page-sections.git"
+  },
+  "keywords": [
+    "sections",
+    "layout",
+    "web-components",
+    "ui",
+    "vanillajs"
+  ],
+  "author": "Lukas Oppermann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nuclei/page-sections/issues"
+  },
+  "homepage": "https://github.com/nuclei/page-sections#readme",
+  "devDependencies": {
+    "babel-preset-latest": "^6.16.0",
+    "coveralls": "^2.11.15",
+    "eslint": "^3.12.2",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-sourcemaps": "^1.9.1",
+    "istanbul": "^0.4.5",
+    "mocha-istanbul": "^0.3.0",
+    "systemjs": "^0.19.41",
+    "web-component-tester": "^5.0.0",
+    "web-component-tester-istanbul": "^0.10.0",
+    "webcomponents.js": "^0.7.23"
+  }
+}

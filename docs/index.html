@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Page-Sections</title>
+        <script src="webcomponents.js/webcomponents.js"></script>
+        <script src="../src/page-sections.js"></script>
+        <script src="../src/page-section.js"></script>
+        <script src="https://rawgit.com/nuclei/page-sections/master/src/page-sections.js"></script>
+        <script src="https://rawgit.com/nuclei/page-sections/master/src/page-section.js"></script>
+        <style media="screen">
+            body{
+                margin: 0;
+                font-family: sans-serif;
+                padding-bottom: 1000px;
+            }
+            nav{
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background: rgb(30,40,50);
+                height: 50px;
+                color: white;
+                z-index: 900;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            }
+            nav div{
+                padding: 15px;
+            }
+            .red{
+                font-weight: bold;
+                color: red;
+            }
+            .blue{
+                color: white;
+                font-weight: bold;
+                height: 300px;
+                background: #121288;
+            }
+            .test{
+                padding-top: 50px;
+                background: #E5E4E1;
+                border: 10px solid white;
+            }
+            page-section[active]{
+                border: 20px solid red;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <div>Page-Sections</div>
+        </nav>
+        <page-sections>
+            <page-section class="test"><div class="red">Test</div></page-section>
+            <page-section><div class="red">2</div></page-section>
+            <div class="blue">Another</div>
+            <page-section class="test" test2><div class="red">Test 2</div></page-section>
+            <page-section class="test" test3><div class="red">Test 3</div></page-section>
+            <page-section class="test" test4><div class="red">Test 4</div></page-section>
+        </page-sections>
+    </body>
+    <script type="text/javascript">
+    </script>
+</html>
