@@ -1,3 +1,24 @@
+
+import makeTemplate from './make-template';
+
+let template = makeTemplate`<style>
+        :host{
+            display: inline-block;
+            flex: 0 1 auto;
+        }
+        :host(:not([flexible])){
+            box-sizing: border-box;
+            width: 100%;
+            min-height: 100vh;
+        }
+        :host([flexible]){
+            margin-left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>`;
+
+ShadyCSS.prepareTemplate(template, 'page-section');
+
 class PageSectionItem extends HTMLElement {
     constructor() {
         // If you define a ctor, always call super() first!
@@ -5,26 +26,10 @@ class PageSectionItem extends HTMLElement {
         super();
         // by default isActive is false
         this.isActive = false;
-        // create shadowRoot
+        // Attach a shadow root to the element.
         const shadowRoot = this.attachShadow({mode: 'open'});
-        shadowRoot.innerHTML = `
-        <style>
-            :host{
-                display: inline-block;
-                flex: 0 1 auto;
-            }
-            :host(:not([flexible])){
-                box-sizing: border-box;
-                width: 100%;
-                min-height: 100vh;
-            }
-            :host([flexible]){
-                margin-left: 50%;
-                transform: translateX(-50%);
-            }
-        </style>
-        <slot></slot>
-        `;
+        ShadyCSS.applyStyle(this);
+        shadowRoot.appendChild(document.importNode(template.content, true));
     }
     /**
      * check if element is in view
@@ -74,4 +79,5 @@ class PageSectionItem extends HTMLElement {
         }
     }
 }
-window.customElements.define('page-section', PageSectionItem);
+
+export default PageSectionItem;
