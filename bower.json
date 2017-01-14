@@ -24,5 +24,10 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "devDependencies": {
+    "custom-elements": "webcomponents/custom-elements#master",
+    "shadycss": "webcomponents/shadycss",
+    "shadydom": "webcomponents/shadydom"
+  }
 }

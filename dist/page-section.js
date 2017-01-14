@@ -2,7 +2,7 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['<style>\n      :host{\n          display: flex;\n          flex-direction: column;\n          flex-wrap: nowrap;\n      }\n    </style>\n    <div class="o-page-sections">\n        <slot></slot>\n    </div>'], ['<style>\n      :host{\n          display: flex;\n          flex-direction: column;\n          flex-wrap: nowrap;\n      }\n    </style>\n    <div class="o-page-sections">\n        <slot></slot>\n    </div>']);
+var _templateObject = _taggedTemplateLiteral(['<style>\n            :host{\n                display: inline-block;\n                flex: 0 1 auto;\n            }\n            :host(:not([flexible])){\n                box-sizing: border-box;\n                width: 100%;\n                min-height: 100vh;\n            }\n            :host([flexible]){\n                margin-left: 50%;\n                transform: translateX(-50%);\n            }\n        </style>\n        <div class="o-page-section">\n            <slot></slot>\n        </div>'], ['<style>\n            :host{\n                display: inline-block;\n                flex: 0 1 auto;\n            }\n            :host(:not([flexible])){\n                box-sizing: border-box;\n                width: 100%;\n                min-height: 100vh;\n            }\n            :host([flexible]){\n                margin-left: 50%;\n                transform: translateX(-50%);\n            }\n        </style>\n        <div class="o-page-section">\n            <slot></slot>\n        </div>']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -36,21 +36,22 @@ var makeTemplate = function makeTemplate(strings) {
   return template;
 };
 
-/* global HTMLElement */
+/* global HTMLElement Event */
 (function () {
-  var PageSections = function (_CustomElement2) {
-    _inherits(PageSections, _CustomElement2);
+  var PageSectionItem = function (_CustomElement2) {
+    _inherits(PageSectionItem, _CustomElement2);
 
-    function PageSections() {
-      _classCallCheck(this, PageSections);
+    function PageSectionItem() {
+      _classCallCheck(this, PageSectionItem);
 
-      // set sections initial active state to false
-      var _this = _possibleConstructorReturn(this, (PageSections.__proto__ || Object.getPrototypeOf(PageSections)).call(this));
-      // needs to be called first
+      // by default _active is false
+      var _this = _possibleConstructorReturn(this, (PageSectionItem.__proto__ || Object.getPrototypeOf(PageSectionItem)).call(this));
+      // If you define a ctor, always call super() first!
+      // This is specific to CE and required by the spec.
 
 
       _this._active = false;
-      // create shadowRoot
+      // Attach a shadow root to the element.
       var shadowRoot = _this.attachShadow({ mode: 'open' });
       // add content to shadowRoot & apply css polyfill
       ShadyCSS.applyStyle(_this); // eslint-disable-line no-undef
@@ -58,38 +59,32 @@ var makeTemplate = function makeTemplate(strings) {
       return _this;
     }
     /**
-     * get active state of parent container
+     * get active state of individual section
      * @method active
      * @return {Boolean}
      */
 
 
-    _createClass(PageSections, [{
+    _createClass(PageSectionItem, [{
       key: 'connectedCallback',
+
+      /**
+       * When element is added to DOM
+       */
       value: function connectedCallback() {
-        this._scrollEvent = this._scrollEvent.bind(this);
-        // wrap sections
-        window.addEventListener('scroll', this._scrollEvent); // bing this, so that it refers to custom element instead of window
-      }
-    }, {
-      key: '_scrollEvent',
-      value: function _scrollEvent(e) {
-        clearTimeout(this._scrollEvent.fn);
-        this._scrollEvent.fn = setTimeout(function () {
-          this.setActive();
-        }.bind(this), 10);
+        // initialize activated state
+        this.setActive();
       }
       /**
-       * check if section wrapper is in viewport
+       * set _active property & add/remove active attr
        */
 
     }, {
       key: '_setActiveState',
-
-      /**
-       * set _active property & add/remove active attr
-       */
       value: function _setActiveState(state) {
+        if (this._active === state) {
+          return;
+        }
         // set _active property
         this._active = state === true;
         // add or remove active attribute
@@ -100,25 +95,33 @@ var makeTemplate = function makeTemplate(strings) {
           this.removeAttribute('active');
         }
       }
-      // check if a child element is in view and set it to active
+      /**
+       * set active if in viewport or unactive if not
+       */
 
     }, {
       key: 'setActive',
       value: function setActive() {
         this._setActiveState(this._inView);
-        // if element is in view, active children
+
         if (this._inView) {
-          // Get all child elements and activate visible ones
-          // stop once an inactive item follows an active item
-          var elements = this.querySelectorAll('page-section');
-          for (var i = 0; elements.length > i; ++i) {
-            elements[i].setActive();
-            // abort if current element is NOT in view, but previous was in view
-            if (i > 0 && elements[i].active === false && elements[i - 1].active === true) {
-              return;
-            }
+          if (this.active === false) {
+            // set attributes
+            this.setAttribute('active', '');
+            this._active = true;
+            // Dispatch the event.
+            this.dispatchEvent(new Event('activated'));
           }
-          return;
+          // return true
+          return true;
+        }
+        // set element to unactive
+        if (this.active === true) {
+          // set attributes
+          this.removeAttribute('active');
+          this._active = false;
+          // Dispatch the event.
+          this.dispatchEvent(new Event('deactivated'));
         }
       }
     }, {
@@ -126,22 +129,28 @@ var makeTemplate = function makeTemplate(strings) {
       get: function get() {
         return this._active;
       }
+      /**
+       * check if element is in view
+       */
+
     }, {
       key: '_inView',
       get: function get() {
-        console.log('Top: ' + this.getBoundingClientRect().top);
-        console.log('Bottom: ' + this.getBoundingClientRect().bottom + ', ' + window.innerHeight);
-        console.log('---------');
-        return this.getBoundingClientRect().bottom > 0;
+        // get elements bounding box
+        var box = this.getBoundingClientRect();
+        // check if element is in view
+        if (box.top >= 0 && (box.top < window.innerHeight * 0.5 || box.bottom <= window.innerHeight) || box.top < window.innerHeight * 0.5 && box.bottom > window.innerHeight * 0.5) {
+          return true;
+        }
       }
     }]);
 
-    return PageSections;
+    return PageSectionItem;
   }(_CustomElement);
 
   var template = makeTemplate(_templateObject);
 
-  ShadyCSS.prepareTemplate(template, 'page-sections'); // eslint-disable-line no-undef
-  window.customElements.define('page-sections', PageSections);
+  ShadyCSS.prepareTemplate(template, 'page-section'); // eslint-disable-line no-undef
+  window.customElements.define('page-section', PageSectionItem);
 })();
-//# sourceMappingURL=page-sections.js.map
+//# sourceMappingURL=page-section.js.map
