@@ -17,7 +17,9 @@ You need the [webcomponents-lite polyfill](https://github.com/webcomponents/webc
 Load the `polyfill` and the `page-sections.js` & `page-section.js` in your html page or however you load you javascript dependencies:
 
 ```html
-<script src="webcomponents-lite.js"></script>
+<script src="../node_modules/@webcomponents/custom-elements/custom-elements.min.js"></script>
+<script src="../node_modules/@webcomponents/shadydom/shadydom.min.js"></script>
+<script src="../node_modules/@webcomponents/shadycss/shadycss.min.js"></script>
 <script src="./node_modules/page-sections/dist/page-sections.js"></script>
 <script src="./node_modules/page-sections/dist/page-section.js"></script>
 ```
