@@ -139,7 +139,7 @@ var makeTemplate = function makeTemplate(strings) {
         // get elements bounding box
         var box = this.getBoundingClientRect();
         // check if element is in view
-        if (box.top >= 0 && (box.top < window.innerHeight * 0.5 || box.bottom <= window.innerHeight) || box.top < window.innerHeight * 0.5 && box.bottom > window.innerHeight * 0.5) {
+        if (box.top >= 0 && (box.top < window.innerHeight * 0.5 || box.bottom <= window.innerHeight) || box.top < window.innerHeight * 0.5 && box.bottom > window.innerHeight * 0.5 || box.top < window.innerHeight - box.height / 1.25) {
           return true;
         }
       }
