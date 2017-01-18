@@ -86,9 +86,8 @@ import makeTemplate from './make-template';
           flex-wrap: nowrap;
       }
     </style>
-    <div class="o-page-sections">
-        <slot></slot>
-    </div>`
+    <slot></slot>
+  `
 
   ShadyCSS.prepareTemplate(template, 'page-sections') // eslint-disable-line no-undef
   window.customElements.define('page-sections', PageSections)

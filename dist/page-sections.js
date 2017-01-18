@@ -2,7 +2,7 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['<style>\n      :host{\n          display: flex;\n          flex-direction: column;\n          flex-wrap: nowrap;\n      }\n    </style>\n    <div class="o-page-sections">\n        <slot></slot>\n    </div>'], ['<style>\n      :host{\n          display: flex;\n          flex-direction: column;\n          flex-wrap: nowrap;\n      }\n    </style>\n    <div class="o-page-sections">\n        <slot></slot>\n    </div>']);
+var _templateObject = _taggedTemplateLiteral(['<style>\n      :host{\n          display: flex;\n          flex-direction: column;\n          flex-wrap: nowrap;\n      }\n    </style>\n    <slot></slot>\n  '], ['<style>\n      :host{\n          display: flex;\n          flex-direction: column;\n          flex-wrap: nowrap;\n      }\n    </style>\n    <slot></slot>\n  ']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 

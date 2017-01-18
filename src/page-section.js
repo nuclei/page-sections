@@ -105,9 +105,8 @@ import makeTemplate from './make-template';
                 transform: translateX(-50%);
             }
         </style>
-        <div class="o-page-section">
-            <slot></slot>
-        </div>`
+        <slot></slot>
+  `
 
   ShadyCSS.prepareTemplate(template, 'page-section') // eslint-disable-line no-undef
   window.customElements.define('page-section', PageSectionItem)
