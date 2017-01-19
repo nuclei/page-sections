@@ -6,6 +6,7 @@ const sourcemaps = require('gulp-sourcemaps')
 const babel = require('gulp-babel')
 // const rollup = require('gulp-rollup');
 const rollup = require('rollup-stream')
+const commonjs = require('rollup-plugin-commonjs')
 const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
 const path = require('path')
@@ -15,7 +16,13 @@ gulp.task('js', () => {
   return merge(['src/page-section.js', 'src/page-sections.js'].map(function (entry) {
     return rollup({
       entry: entry,
-      sourceMap: true
+      sourceMap: true,
+      plugins: [
+          commonjs({
+              // if true then uses of `global` won't be dealt with by this plugin
+              ignoreGlobal: false,  // Default: false
+            })
+      ]
     })
         .pipe(source(path.resolve(entry), path.resolve('./src')))
 

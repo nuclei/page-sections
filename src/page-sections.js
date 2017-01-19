@@ -1,7 +1,7 @@
 /* global HTMLElement */
-import makeTemplate from './make-template';
-
 (function () {
+  let makeTemplate = require('./make-template')
+
   class PageSections extends HTMLElement {
 
     constructor () {
@@ -40,9 +40,6 @@ import makeTemplate from './make-template';
          * check if section wrapper is in viewport
          */
     get _inView () {
-      console.log('Top: ' + this.getBoundingClientRect().top)
-      console.log('Bottom: ' + this.getBoundingClientRect().bottom + ', ' + window.innerHeight)
-      console.log('---------')
       return this.getBoundingClientRect().bottom > 0
     }
         /**

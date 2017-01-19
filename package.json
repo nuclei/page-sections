@@ -44,6 +44,8 @@
     "merge-stream": "^1.0.1",
     "mocha-istanbul": "^0.3.0",
     "path": "^0.12.7",
+    "require1k": "^1.0.1",
+    "rollup-plugin-commonjs": "^7.0.0",
     "rollup-stream": "^1.16.0",
     "snazzy": "^5.0.0",
     "standard": "^8.6.0",

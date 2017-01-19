@@ -1,7 +1,18 @@
 /* global HTMLElement Event */
-import makeTemplate from './make-template';
-
 (function () {
+  // let makeTemplate = require('./make-template')
+  const makeTemplate = function (strings, ...substs) {
+    var html = ''
+    for (let i = 0; i < substs.length; i++) {
+      html += strings[i]
+      html += substs[i]
+    }
+    html += strings[strings.length - 1]
+    var template = document.createElement('template')
+    template.innerHTML = html
+    return template
+  }
+
   class PageSectionItem extends HTMLElement {
     constructor () {
             // If you define a ctor, always call super() first!
@@ -32,11 +43,9 @@ import makeTemplate from './make-template';
       // check if element is in view
       if ((box.top >= 0 && (
                     box.top < window.innerHeight * 0.5 ||
-                    box.bottom <= window.innerHeight))
-          ||
-            (box.top < window.innerHeight * 0.5 && box.bottom > window.innerHeight * 0.5)
-          ||
-            box.top < window.innerHeight - box.height/1.25
+                    box.bottom <= window.innerHeight)) ||
+            (box.top < window.innerHeight * 0.5 && box.bottom > window.innerHeight * 0.5) ||
+            box.top < window.innerHeight - box.height / 1.25
             ) {
         return true
       }

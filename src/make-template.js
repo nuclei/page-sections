@@ -12,4 +12,4 @@ const makeTemplate = function (strings, ...substs) {
 /**
  * export make template function
  */
-export default makeTemplate
+module.exports = makeTemplate

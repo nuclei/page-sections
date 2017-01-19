@@ -19,25 +19,26 @@ function _CustomElement() {
 ;
 Object.setPrototypeOf(_CustomElement.prototype, HTMLElement.prototype);
 Object.setPrototypeOf(_CustomElement, HTMLElement);
-var makeTemplate = function makeTemplate(strings) {
-  var html = '';
-
-  for (var _len = arguments.length, substs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    substs[_key - 1] = arguments[_key];
-  }
-
-  for (var i = 0; i < substs.length; i++) {
-    html += strings[i];
-    html += substs[i];
-  }
-  html += strings[strings.length - 1];
-  var template = document.createElement('template');
-  template.innerHTML = html;
-  return template;
-};
-
 /* global HTMLElement */
+// import { makeTemplate } from './make-template.js'
 (function () {
+  var makeTemplate = function makeTemplate(strings) {
+    var html = '';
+
+    for (var _len = arguments.length, substs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      substs[_key - 1] = arguments[_key];
+    }
+
+    for (var i = 0; i < substs.length; i++) {
+      html += strings[i];
+      html += substs[i];
+    }
+    html += strings[strings.length - 1];
+    var template = document.createElement('template');
+    template.innerHTML = html;
+    return template;
+  };
+
   var PageSections = function (_CustomElement2) {
     _inherits(PageSections, _CustomElement2);
 
@@ -129,9 +130,6 @@ var makeTemplate = function makeTemplate(strings) {
     }, {
       key: '_inView',
       get: function get() {
-        console.log('Top: ' + this.getBoundingClientRect().top);
-        console.log('Bottom: ' + this.getBoundingClientRect().bottom + ', ' + window.innerHeight);
-        console.log('---------');
         return this.getBoundingClientRect().bottom > 0;
       }
     }]);
