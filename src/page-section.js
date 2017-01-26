@@ -1,30 +1,40 @@
 /* global HTMLElement Event */
 (function () {
-  // let makeTemplate = require('./make-template')
-  const makeTemplate = function (strings, ...substs) {
-    var html = ''
-    for (let i = 0; i < substs.length; i++) {
-      html += strings[i]
-      html += substs[i]
-    }
-    html += strings[strings.length - 1]
-    var template = document.createElement('template')
-    template.innerHTML = html
-    return template
-  }
+  let makeTemplate = require('./make-template')
 
-  class PageSectionItem extends HTMLElement {
+  class PageSection extends HTMLElement {
     constructor () {
             // If you define a ctor, always call super() first!
             // This is specific to CE and required by the spec.
       super()
-            // by default _active is false
+      var item = makeTemplate`<style>
+                :host{
+                    display: inline-block;
+                    flex: 0 1 auto;
+                }
+                :host(:not([flexible])){
+                    box-sizing: border-box;
+                    width: 100%;
+                    min-height: 100vh;
+                }
+                :host([flexible]){
+                    margin-left: 50%;
+                    transform: translateX(-50%);
+                }
+            </style>
+            <slot></slot>
+      `
+      // by default _active is false
       this._active = false
-            // Attach a shadow root to the element.
-      const shadowRoot = this.attachShadow({mode: 'open'})
-            // add content to shadowRoot & apply css polyfill
-      ShadyCSS.applyStyle(this) // eslint-disable-line no-undef
-      shadowRoot.appendChild(document.importNode(template.content, true))
+      // Attach a shadow root to the element.
+      var shadowRoot = this.attachShadow({mode: 'open'})
+      // check if polyfill is used
+      if (typeof ShadyCSS !== 'undefined') {
+        ShadyCSS.prepareTemplate(item, 'page-section') // eslint-disable-line no-undef
+        // add content to shadowRoot & apply css polyfill
+        ShadyCSS.applyStyle(this) // eslint-disable-line no-undef
+      }
+      shadowRoot.appendChild(document.importNode(item.content, true))
     }
         /**
          * get active state of individual section
@@ -100,26 +110,7 @@
         this.dispatchEvent(new Event('deactivated'))
       }
     }
-    }
-
-  const template = makeTemplate`<style>
-            :host{
-                display: inline-block;
-                flex: 0 1 auto;
-            }
-            :host(:not([flexible])){
-                box-sizing: border-box;
-                width: 100%;
-                min-height: 100vh;
-            }
-            :host([flexible]){
-                margin-left: 50%;
-                transform: translateX(-50%);
-            }
-        </style>
-        <slot></slot>
-  `
-
-  ShadyCSS.prepareTemplate(template, 'page-section') // eslint-disable-line no-undef
-  window.customElements.define('page-section', PageSectionItem)
+  }
+  module.exports = PageSection
+  // window.customElements.define('page-section', PageSectionItem)
 })()

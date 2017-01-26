@@ -8,7 +8,6 @@
     <script src="../node_modules/@webcomponents/shadycss/shadycss.min.js"></script>
     <script src="../node_modules/web-component-tester/browser.js"></script>
     <script src="../node_modules/require1k/require1k.min.js"  data-main="../src/page-sections"></script>
-    <script src="../src/page-section.js"></script>
     <style media="screen">
       #section_one{
         background-color: rgb(246,245,243);
@@ -52,7 +51,7 @@
     </style>
     </head>
     <body>
-      <page-sections id="fixture">
+      <page-sections id="sections_one">
         <page-section id="section_one">
           <div class="item">
             <h1>Headline</h1>
@@ -68,15 +67,36 @@
         <page-section id="section_four">
           <p class="copy">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </page-section>
+      </page-sections>
+      <page-sections id="sections_two">
         <page-section id="section_five">
           <p class="copy">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </page-section>
       </page-sections>
     <script>
         suite('page-sections', function() {
-            var el;
-            test('test', function() {
-              assert.isTrue(true);
+            let sections;
+            let section_items;
+
+            setup(function() {
+              sections = {
+                one: document.getElementById('sections_one'),
+                two: document.getElementById('sections_two')
+              };
+              section_items = {
+                one: document.getElementById('section_one'),
+                two: document.getElementById('section_two')
+              };
+            });
+
+            test('initial active state', function() {
+              // section container
+              // assert.isTrue(sections.one.hasAttribute('active'), 'First page-sections container is active');
+              assert.isFalse(sections.two.hasAttribute('active'), 'Second page-sections container is NOT active');
+              // section
+              assert.isTrue(section_items.one.hasAttribute('active'), 'First page-sections item is active');
+              assert.isFalse(section_items.two.hasAttribute('active'), 'Second page-section item is NOT active');
+
           });
         });
     </script>
