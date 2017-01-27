@@ -75,10 +75,11 @@
       </page-sections>
     <script>
         suite('page-sections', function() {
+
             let sections;
             let section_items;
 
-            setup(function() {
+            setup(function(done) {
               sections = {
                 one: document.getElementById('sections_one'),
                 two: document.getElementById('sections_two')
@@ -87,16 +88,18 @@
                 one: document.getElementById('section_one'),
                 two: document.getElementById('section_two')
               };
+              setTimeout(function(){
+                done();
+              },200)
             });
 
             test('initial active state', function() {
               // section container
-              // assert.isTrue(sections.one.hasAttribute('active'), 'First page-sections container is active');
+              assert.isTrue(document.getElementById('sections_one').hasAttribute('active'), 'First page-sections container is active');
               assert.isFalse(sections.two.hasAttribute('active'), 'Second page-sections container is NOT active');
               // section
               assert.isTrue(section_items.one.hasAttribute('active'), 'First page-sections item is active');
               assert.isFalse(section_items.two.hasAttribute('active'), 'Second page-section item is NOT active');
-
           });
         });
     </script>

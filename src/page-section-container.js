@@ -39,8 +39,12 @@
 
     connectedCallback () {
       this._scrollEvent = this._scrollEvent.bind(this)
-            // wrap sections
+      // wrap sections
       window.addEventListener('scroll', this._scrollEvent) // bing this, so that it refers to custom element instead of window
+      // initialize activated state
+      setTimeout(function () {
+        this.setActive()
+      }.bind(this), 10)
     }
 
     _scrollEvent (e) {
@@ -49,37 +53,37 @@
         this.setActive()
       }.bind(this), 10)
     }
-        /**
-         * check if section wrapper is in viewport
-         */
+    /**
+     * check if section wrapper is in viewport
+     */
     get _inView () {
-      return this.getBoundingClientRect().bottom > 0
+      return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight
     }
-        /**
-         * set _active property & add/remove active attr
-         */
+    /**
+     * set _active property & add/remove active attr
+     */
     _setActiveState (state) {
-            // set _active property
+      // set _active property
       this._active = (state === true)
-            // add or remove active attribute
+      // add or remove active attribute
       if (this._active) {
-        this.setAttribute('active', '')
+        this.setAttribute('active','')
         return
       } else {
         this.removeAttribute('active')
       }
     }
-        // check if a child element is in view and set it to active
+    // check if a child element is in view and set it to active
     setActive () {
       this._setActiveState(this._inView)
-            // if element is in view, active children
+      // if element is in view, active children
       if (this._inView) {
-                // Get all child elements and activate visible ones
-                // stop once an inactive item follows an active item
+        // Get all child elements and activate visible ones
+        // stop once an inactive item follows an active item
         var elements = this.querySelectorAll('page-section')
         for (var i = 0; elements.length > i; ++i) {
           elements[i].setActive()
-                    // abort if current element is NOT in view, but previous was in view
+          // abort if current element is NOT in view, but previous was in view
           if (i > 0 && elements[i].active === false && elements[i - 1].active === true) {
             return
           }

@@ -36,19 +36,19 @@
       }
       shadowRoot.appendChild(document.importNode(item.content, true))
     }
-        /**
-         * get active state of individual section
-         * @method active
-         * @return {Boolean}
-         */
+    /**
+     * get active state of individual section
+     * @method active
+     * @return {Boolean}
+     */
     get active () {
       return this._active
     }
-        /**
-         * check if element is in view
-         */
+    /**
+     * check if element is in view
+     */
     get _inView () {
-            // get elements bounding box
+      // get elements bounding box
       var box = this.getBoundingClientRect()
       // check if element is in view
       if ((box.top >= 0 && (
@@ -64,7 +64,7 @@
          * When element is added to DOM
          */
     connectedCallback () {
-            // initialize activated state
+      // initialize activated state
       this.setActive()
     }
         /**
@@ -84,29 +84,29 @@
         this.removeAttribute('active')
       }
     }
-        /**
-         * set active if in viewport or unactive if not
-         */
+    /**
+     * set active if in viewport or unactive if not
+     */
     setActive () {
       this._setActiveState(this._inView)
 
       if (this._inView) {
         if (this.active === false) {
-                    // set attributes
+          // set attributes
           this.setAttribute('active', '')
           this._active = true
-                    // Dispatch the event.
+          // Dispatch the event.
           this.dispatchEvent(new Event('activated'))
         }
-                // return true
+        // return true
         return true
       }
-            // set element to unactive
+      // set element to unactive
       if (this.active === true) {
-                // set attributes
+        // set attributes
         this.removeAttribute('active')
         this._active = false
-                // Dispatch the event.
+        // Dispatch the event.
         this.dispatchEvent(new Event('deactivated'))
       }
     }
