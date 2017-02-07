@@ -9,6 +9,9 @@
     <script src="../node_modules/web-component-tester/browser.js"></script>
     <script src="../node_modules/require1k/require1k.min.js"  data-main="../src/page-sections"></script>
     <style media="screen">
+      html, body{
+        min-width: 0px;
+      }
       #section_one{
         background-color: rgb(246,245,243);
         border: 10px solid white;
@@ -26,7 +29,7 @@
         position: relative;
       }
       page-section[active]{
-        border: 1px solid red;
+        box-shadow: inset 0 0 0 10px red;
         box-sizing: border-box;
       }
       page-section[active]::before{
@@ -51,8 +54,8 @@
     </style>
     </head>
     <body>
-      <page-sections id="sections_one">
-        <page-section id="section_one">
+      <page-sections id="section_container_one" requiredVisible=".5">
+        <page-section id="section_one" requiredVisible=".3">
           <div class="item">
             <h1>Headline</h1>
             <h2>Subheadline</h2>
@@ -68,40 +71,71 @@
           <p class="copy">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </page-section>
       </page-sections>
-      <page-sections id="sections_two">
+      <page-sections id="section_container_two">
         <page-section id="section_five">
           <p class="copy">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </page-section>
       </page-sections>
     <script>
-        suite('page-sections', function() {
+        suite('Page Sections', function() {
+          var initial_activated_event = false;
+          var initial_item_activated_event = false;
 
-            let sections;
-            let section_items;
-
-            setup(function(done) {
-              sections = {
-                one: document.getElementById('sections_one'),
-                two: document.getElementById('sections_two')
-              };
-              section_items = {
-                one: document.getElementById('section_one'),
-                two: document.getElementById('section_two')
-              };
-              setTimeout(function(){
-                done();
-              },200)
+            setup(function(){
+              document.getElementById('section_container_one').addEventListener('activated', function(e){
+                initial_activated_event = true;
+              })
+              document.getElementById('section_one').addEventListener('activated', function(e){
+                initial_item_activated_event = true;
+              })
+            })
+            /**
+             * Container suite
+             */
+            suite('CONTAINER', function() {
+              /**
+               * initial activated event
+               */
+              test('initial activated event', function() {
+                setTimeout(function(){
+                  assert.isTrue(initial_activated_event, 'First page-sections container did NOT emit activated event');
+                },200)
+              })
+              /**
+               * initial active state
+               */
+              test('initial active state', function(done) {
+                setTimeout(function(){
+                  assert.isTrue(document.getElementById('section_container_one').hasAttribute('active'), 'First page-sections container is active');
+                  assert.isFalse(document.getElementById('section_container_two').hasAttribute('active'), 'Second page-sections container is NOT active');
+                  done()
+                },200)
+              });
             });
+            /**
+             * Item
+             */
+            suite('ITEMS', function() {
+              /**
+               * initial activated event
+               */
+              test('initial activated event', function() {
+                assert.isTrue(initial_activated_event, 'First page-section item did NOT emit activated event');
+              })
+              /**
+               * initial active state
+               */
+              test('initial active state', function(done) {
+                setTimeout(function(){
+                  assert.isTrue(document.getElementById('section_one').hasAttribute('active'), 'First page-section item is active');
+                  assert.isFalse(document.getElementById('section_two').hasAttribute('active'), 'Second page-section item is NOT active');
+                  done()
+                },200)
+              })
 
-            test('initial active state', function() {
-              // section container
-              assert.isTrue(document.getElementById('sections_one').hasAttribute('active'), 'First page-sections container is active');
-              assert.isFalse(sections.two.hasAttribute('active'), 'Second page-sections container is NOT active');
-              // section
-              assert.isTrue(section_items.one.hasAttribute('active'), 'First page-sections item is active');
-              assert.isFalse(section_items.two.hasAttribute('active'), 'Second page-section item is NOT active');
-          });
-        });
+
+            })
+          })
     </script>
     </body>
 </html>
