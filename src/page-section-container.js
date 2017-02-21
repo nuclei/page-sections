@@ -63,15 +63,14 @@
         this._setActive()
         // Get all child elements and activate visible ones
         // stop once an inactive item follows an active item
-        var elements = this.querySelectorAll('page-section')
-        for (var i = 0; elements.length > i; ++i) {
-          elements[i].parent = this
-          elements[i].setActiveState()
+        Array.prototype.slice.call(this.querySelectorAll('page-section')).map(function (item, index, array) {
+          item.parent = item
+          item.setActiveState()
           // abort if current element is NOT in view, but previous was in view
-          if (i > 0 && !elements[i].hasAttribute('active') && elements[i - 1].hasAttribute('active')) {
+          if (index > 0 && !item.hasAttribute('active') && array[index - 1].hasAttribute('active')) {
             return
           }
-        }
+        })
       } else {
         this._setUnactive()
       }
