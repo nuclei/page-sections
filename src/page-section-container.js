@@ -23,7 +23,7 @@
       if (typeof ShadyCSS !== 'undefined') {
         ShadyCSS.prepareTemplate(template, 'page-sections') // eslint-disable-line no-undef
         // apply css polyfill
-        ShadyCSS.applyStyle(this) // eslint-disable-line no-undef
+        ShadyCSS.styleElement(this) // eslint-disable-line no-undef
       }
       // add content to shadowRoot
       shadowRoot.appendChild(document.importNode(template.content, true))
