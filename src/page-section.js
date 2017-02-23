@@ -6,15 +6,10 @@
       :host{
           display: inline-block;
           flex: 0 1 auto;
-      }
-      :host(:not([flexible])){
           box-sizing: border-box;
           width: 100%;
           min-height: 100vh;
-      }
-      :host([flexible]){
-          margin-left: 50%;
-          transform: translateX(-50%);
+          align-self: center;
       }
     </style>
     <slot></slot>
