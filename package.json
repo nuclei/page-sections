@@ -1,20 +1,18 @@
 {
   "name": "page-sections",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "A simple section solution for your single page or landing page. Vanilla js, no framework dependencies, small footprint.",
   "main": "dist/page-sections.js",
-  "directories": {
-    "doc": "docs",
-    "test": "test"
-  },
-  "scripts": {
-    "test": "snazzy 'src/*.js' && ./node_modules/.bin/wct",
-    "travis": "./node_modules/.bin/wct ",
-    "cover": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha test/*.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+  "config": {
+    "src": "src/page-sections.ts",
+    "moduleName": "PageSections"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nuclei/page-sections.git"
+  },
+  "bugs": {
+    "url": "http://github.com/nuclei/page-sections/issues"
   },
   "keywords": [
     "sections",
@@ -25,27 +23,23 @@
   ],
   "author": "Lukas Oppermann",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/nuclei/page-sections/issues"
-  },
-  "homepage": "https://github.com/nuclei/page-sections#readme",
   "devDependencies": {
-    "@webcomponents/custom-elements": "^1.0.0-alpha.3",
-    "@webcomponents/shadycss": "github:webcomponents/shadycss",
-    "@webcomponents/shadydom": "github:webcomponents/shadydom",
-    "babel-plugin-transform-custom-element-classes": "^0.1.0",
-    "babel-preset-latest": "^6.16.0",
-    "coveralls": "^2.11.15",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-sourcemaps": "^1.9.1",
-    "gulp-webmake": "0.0.41",
-    "istanbul": "^0.4.5",
-    "mocha-istanbul": "^0.3.0",
-    "require1k": "^1.0.1",
-    "snazzy": "^5.0.0",
-    "standard": "^8.6.0",
-    "web-component-tester": "^5.0.0",
-    "web-component-tester-istanbul": "^0.10.0"
+    "make-template": "^1.0.1",
+    "rollup": "^0.41.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-typescript": "^0.8.1",
+    "rollup-watch": "^3.2.2",
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.2",
+    "standard-readme": "^2.0.2",
+    "typescript": "^2.4.0",
+    "typescript-eslint-parser": "^2.1.0",
+    "web-component-tester": "^6.0.0"
+  },
+  "scripts": {
+    "build": "npm test && rollup -c",
+    "build:watch": "npm run build -- -w",
+    "test": "standard src/*.ts --parser typescript-eslint-parser | snazzy && tsc src/*.ts --noEmit --pretty --alwaysStrict --allowJs --noUnusedLocals --target ES5 --lib es6,dom && standard-readme",
+    "travis": "npm run test "
   }
 }

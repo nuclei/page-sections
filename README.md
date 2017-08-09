@@ -1,4 +1,4 @@
-# Page Sections
+# Page-Sections
 A simple section solution for your single page or landing page. Vanilla js, no framework dependencies, small footprint.
 
 [![Spec Custom Elements V1](https://img.shields.io/badge/spec-custom%20elements%20v1-F52757.svg?style=flat-square)](https://www.w3.org/TR/custom-elements/)
@@ -13,16 +13,18 @@ A simple section solution for your single page or landing page. Vanilla js, no f
 npm install --save page-sections
 ```
 
-You need the [webcomponents-lite polyfill](https://github.com/webcomponents/webcomponentsjs).
+As the support for web components is currently still pretty spotty, you probably want to load a polyfill before loading the web component.
 
-Load the `polyfill` and the `page-sections.js` & `page-section.js` in your html page or however you load you javascript dependencies:
+I recommend the [webcomponentsjs](https://github.com/webcomponents/webcomponentsjs). To make sure the webcomponent is only loaded once the polyfill is done (when using the `webcomponents-loader.js`) you will want to wait for the `WebComponentsReady` event before loading the web component. This event is always fired, even in browser that fully support web components.
 
 ```html
-<script src="../node_modules/@webcomponents/custom-elements/custom-elements.min.js"></script>
-<script src="../node_modules/@webcomponents/shadydom/shadydom.min.js"></script>
-<script src="../node_modules/@webcomponents/shadycss/shadycss.min.js"></script>
-<script src="./node_modules/page-sections/dist/page-sections.js"></script>
-<script src="./node_modules/page-sections/dist/page-section.js"></script>
+<script type="text/javascript" async>
+  window.addEventListener('WebComponentsReady', function () {
+    let script = document.createElement('script')
+    script.setAttribute('src', '../dist/page-sections.js')
+    document.head.appendChild(script)
+  })
+</script>
 ```
 
 ## Usage
@@ -36,3 +38,8 @@ Add one or multiple `<page-sections></page-sections>` elements to your page. Wit
     <page-section><div class="wow">This is so simple.</div></page-section>
 </page-sections>
 ```
+
+### src
+You can add a `src` attribute to a `page-section` to have it `fetch` the resource (which must return some kind of text, e.g. html) and insert it into itself.
+
+This is using `fetch`, so if you want to support browser without `fetch` you will need to include a polyfill.
