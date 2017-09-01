@@ -32,9 +32,9 @@
     "snazzy": "^7.0.0",
     "standard": "^10.0.2",
     "standard-readme": "^2.0.2",
-    "typescript": "^2.4.0",
+    "typescript": "^2.5.2",
     "typescript-eslint-parser": "^2.1.0",
-    "web-component-tester": "^6.0.0"
+    "web-component-tester": "^6.1.5"
   },
   "scripts": {
     "build": "npm test && rollup -c",

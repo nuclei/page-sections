@@ -1,9 +1,9 @@
 module.exports = {
-    "verbose": false,
-    "plugins": {
-        "local": {
-          "browsers": ["chrome","firefox"]
-      }
+  'verbose': false,
+  'plugins': {
+    'local': {
+      'browsers': ['chrome', 'firefox']
+    }
     //   istanbul: {
     //     dir: "./coverage",
     //     reporters: ["text-summary", "lcov"],
@@ -13,6 +13,6 @@ module.exports = {
     //     exclude: [
     //     ]
     //   }
-    }
-};
+  }
+}
 // , "firefox" , "safari"

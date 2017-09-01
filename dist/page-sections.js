@@ -8,6 +8,9 @@ const makeTemplate = function (strings) {
     return template;
 };
 
+
+//# sourceMappingURL=makeTemplate.js.map
+
 let template = makeTemplate `<style>
     :host{
         display: inline-block;
@@ -63,13 +66,11 @@ class PageSectionContainer extends HTMLElement {
         if (this.hasAttribute('active'))
             return;
         this.setAttribute('active', '');
-        this.dispatchEvent(new CustomEvent('activated', { 'detail': {
-                'wasActivated': this.getAttribute('wasActivated') !== null
-            } }));
+        this.dispatchEvent(new CustomEvent('activated'));
     }
     _setUnactive() {
-        if (this.hasAttribute('active') && !this.hasAttribute('wasActivated')) {
-            this.setAttribute('wasActivated', '');
+        if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
+            this.setAttribute('activated', '');
         }
         this.removeAttribute('active');
         this.dispatchEvent(new CustomEvent('deactivated'));
@@ -78,21 +79,40 @@ class PageSectionContainer extends HTMLElement {
 
 let template$1 = makeTemplate `<style>
     :host{
-        display: inline-block;
-        flex: 0 1 auto;
-        box-sizing: border-box;
-        width: 100%;
-        height: auto;
-        min-height: 100vh;
-        align-self: center;
+      display: flex;
+      flex-direction: column;
+      flex: 0 1 auto;
+      box-sizing: border-box;
+      width: 100%;
+      height: auto;
+      align-self: center;
+    }
+    :host([fullscreen]){
+      min-height: 100vh;
+    }
+    :host([centered]){
+      align-items: stretch;
+      flex-direction: row;
+      justify-content: center;
+    }
+    :host([centered]) > #content{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1 1 auto;
     }
   </style>
-  <slot></slot>
+  <div id="content">
+    <slot></slot>
+  </div>
 `;
 class PageSection extends HTMLElement {
     constructor() {
         super();
         this._src = '';
+        this._requestOptions = null;
+        this._fullscreen = false;
+        this._maxwidth = null;
         let shadowRoot = this.attachShadow({ mode: 'open' });
         if (typeof ShadyCSS !== 'undefined') {
             ShadyCSS.prepareTemplate(template$1, 'page-section');
@@ -101,7 +121,7 @@ class PageSection extends HTMLElement {
         shadowRoot.appendChild(document.importNode(template$1.content, true));
     }
     static get observedAttributes() {
-        return ['src'];
+        return ['src', 'fullscreen', 'maxwidth'];
     }
     attributeChangedCallback(attrName, oldVal, newVal) {
         this[attrName] = newVal;
@@ -126,13 +146,11 @@ class PageSection extends HTMLElement {
         if (this.hasAttribute('active'))
             return;
         this.setAttribute('active', '');
-        this.dispatchEvent(new CustomEvent('activated', { 'detail': {
-                'wasActivated': this.getAttribute('wasActivated') !== null
-            } }));
+        this.dispatchEvent(new CustomEvent('activated'));
     }
     _setUnactive() {
-        if (this.hasAttribute('active') && !this.hasAttribute('wasActivated')) {
-            this.setAttribute('wasActivated', '');
+        if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
+            this.setAttribute('activated', '');
         }
         this.removeAttribute('active');
         this.dispatchEvent(new CustomEvent('deactivated'));
@@ -141,7 +159,7 @@ class PageSection extends HTMLElement {
         if (this._src === src)
             return;
         this._src = src;
-        fetch(this._src)
+        fetch(this._src, this.requestOptions)
             .then(response => response.text())
             .then(html => {
             this.innerHTML = html;
@@ -151,10 +169,56 @@ class PageSection extends HTMLElement {
     get src() {
         return this._src;
     }
+    set requestOptions(requestOptions) {
+        if (this._requestOptions === requestOptions)
+            return;
+        this._requestOptions = requestOptions;
+    }
+    get requestOptions() {
+        return this._requestOptions || {};
+    }
+    set fullscreen(fullscreen) {
+        if (this._fullscreen === this._isTruthy(fullscreen))
+            return;
+        this._fullscreen = this._isTruthy(fullscreen);
+        if (this._fullscreen) {
+            this.setAttribute('fullscreen', '');
+        }
+        else {
+            this.removeAttribute('fullscreen');
+        }
+    }
+    get fullscreen() {
+        return this._fullscreen;
+    }
+    set maxwidth(maxwidth) {
+        if (this._maxwidth === maxwidth)
+            return;
+        this._maxwidth = maxwidth;
+        let contentElement = this.shadowRoot.querySelector('#content');
+        if (this._maxwidth !== null && this._maxwidth !== 'none') {
+            contentElement.style.maxWidth = maxwidth;
+            this.setAttribute('maxWidth', maxwidth);
+        }
+        else {
+            contentElement.style.maxWidth = 'auto';
+            this.removeAttribute('maxWidth');
+        }
+    }
+    get maxwidth() {
+        return this._maxwidth;
+    }
+    _isTruthy(value) {
+        if (value === true || value === 'true' || value === '') {
+            return true;
+        }
+        return false;
+    }
 }
 
 window.customElements.define('page-sections', PageSectionContainer);
 window.customElements.define('page-section', PageSection);
+//# sourceMappingURL=page-sections.js.map
 
 }());
 //# sourceMappingURL=page-sections.js.map

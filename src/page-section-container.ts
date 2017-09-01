@@ -90,17 +90,15 @@ export class PageSectionContainer extends HTMLElement { // eslint-disable-line n
     // set attribute
     this.setAttribute('active', '')
     // Dispatch the event.
-    this.dispatchEvent(new CustomEvent('activated', { 'detail': {
-      'wasActivated': this.getAttribute('wasActivated') !== null
-    }}))
+    this.dispatchEvent(new CustomEvent('activated'))
   }
   /**
    * _setUnactive
    */
   private _setUnactive () {
     // set 'wasActivated' attribute, if element was active
-    if (this.hasAttribute('active') && !this.hasAttribute('wasActivated')) {
-      this.setAttribute('wasActivated', '')
+    if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
+      this.setAttribute('activated', '')
     }
     // remove 'active' attribute
     this.removeAttribute('active')

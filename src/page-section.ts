@@ -6,20 +6,40 @@ declare const ShadyCSS // eslint-disable-line no-unused-vars
 
 let template = makeTemplate`<style>
     :host{
-        display: inline-block;
-        flex: 0 1 auto;
-        box-sizing: border-box;
-        width: 100%;
-        height: auto;
-        min-height: 100vh;
-        align-self: center;
+      display: flex;
+      flex-direction: column;
+      flex: 0 1 auto;
+      box-sizing: border-box;
+      width: 100%;
+      height: auto;
+      align-self: center;
+    }
+    :host([fullscreen]){
+      min-height: 100vh;
+    }
+    :host([centered]){
+      align-items: stretch;
+      flex-direction: row;
+      justify-content: center;
+    }
+    :host([centered]) > #content{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1 1 auto;
     }
   </style>
-  <slot></slot>
+  <div id="content">
+    <slot></slot>
+  </div>
 `
 
 export class PageSection extends HTMLElement { // eslint-disable-line no-unused-vars
   private _src: string = '' // eslint-disable-line no-undef
+  private _requestOptions: object = null  // eslint-disable-line no-undef
+  private _fullscreen: boolean = false // eslint-disable-line no-undef
+  private _maxwidth: string = null // eslint-disable-line no-undef
+
   constructor () {
     // If you define a constructor, always call super() first!
     // This is specific to CE and required by the spec.
@@ -40,7 +60,7 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
   * @description return attributes that should be watched for updates
    */
   static get observedAttributes () {
-    return ['src']
+    return ['src', 'fullscreen', 'maxwidth']
   }
   /**
   * @method observedAttributes
@@ -86,17 +106,15 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
     // set attribute
     this.setAttribute('active', '')
     // Dispatch the event.
-    this.dispatchEvent(new CustomEvent('activated', { 'detail': {
-      'wasActivated': this.getAttribute('wasActivated') !== null
-    }}))
+    this.dispatchEvent(new CustomEvent('activated'))
   }
   /**
    * _setUnactive
    */
   private _setUnactive () {
-    // set 'wasActivated' attribute, if element was active
-    if (this.hasAttribute('active') && !this.hasAttribute('wasActivated')) {
-      this.setAttribute('wasActivated', '')
+    // set 'activated' attribute, if element was active
+    if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
+      this.setAttribute('activated', '')
     }
     // remove 'active' attribute
     this.removeAttribute('active')
@@ -111,7 +129,7 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
     if (this._src === src) return
     this._src = src
 
-    fetch(this._src)
+    fetch(this._src, this.requestOptions)
     .then(response => response.text())
     .then(html => {
       this.innerHTML = html
@@ -119,10 +137,81 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
     .catch(console.log)
   }
   /**
-  * @method getter name
-  * @description get the name property
+  * @method getter src
+  * @description get the src property
    */
   get src () {
     return this._src
+  }
+  /**
+  * @method setter requestOptions
+  * @description set the requestOptions property
+   */
+  set requestOptions (requestOptions: object) {
+    if (this._requestOptions === requestOptions) return
+    this._requestOptions = requestOptions
+  }
+  /**
+   * @method getter requestOptions
+   * @description get the requestOptions property
+   */
+  get requestOptions () {
+    return this._requestOptions || {}
+  }
+  /**
+  * @method setter fullscreen
+  * @description set the fullscreen property
+   */
+  set fullscreen (fullscreen: boolean) {
+    if (this._fullscreen === this._isTruthy(fullscreen)) return
+    this._fullscreen = this._isTruthy(fullscreen)
+
+    if (this._fullscreen) {
+      this.setAttribute('fullscreen', '')
+    } else {
+      this.removeAttribute('fullscreen')
+    }
+  }
+  /**
+   * @method getter fullscreen
+   * @description get the fullscreen property
+   */
+  get fullscreen () {
+    return this._fullscreen
+  }
+  /**
+  * @method setter maxwidth
+  * @description set the maxwidth property
+   */
+  set maxwidth (maxwidth: string) {
+    if (this._maxwidth === maxwidth) return
+    this._maxwidth = maxwidth
+
+    let contentElement = <HTMLElement>this.shadowRoot.querySelector('#content')
+
+    if (this._maxwidth !== null && this._maxwidth !== 'none') {
+      contentElement.style.maxWidth = maxwidth
+      this.setAttribute('maxWidth', maxwidth)
+    } else {
+      contentElement.style.maxWidth = 'auto'
+      this.removeAttribute('maxWidth')
+    }
+  }
+  /**
+   * @method getter maxwidth
+   * @description get the maxwidth property
+   */
+  get maxwidth () {
+    return this._maxwidth
+  }
+  /**
+   * @method _isTruthy
+   * @description returns true if value is truthy or empty
+   */
+  private _isTruthy (value) {
+    if (value === true || value === 'true' || value === '') {
+      return true
+    }
+    return false
   }
 }

@@ -22,6 +22,9 @@
                 z-index: 900;
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
             }
+            page-section{
+              background: #E5E4E1;
+            }
             nav div{
                 padding: 15px;
             }
@@ -37,11 +40,16 @@
             }
             .test{
                 padding-top: 50px;
-                background: #E5E4E1;
                 border: 10px solid white;
             }
             page-section[active]{
                 border: 20px solid red;
+            }
+            .box{
+              width: 200px;
+              height: 100px;
+              background: #fff;
+              box-shadow: 0 0 10px rgba(0,0,0,.15);
             }
         </style>
     </head>
@@ -50,14 +58,27 @@
             <div>Page-Sections</div>
         </nav>
         <page-sections>
-            <page-section class="test"><div class="red">Test</div></page-section>
-            <page-section><div class="red">2</div></page-section>
+            <page-section centered fullscreen maxwidth="1000px">
+              <div class="box">Test</div>
+            </page-section>
+            <page-section class="test">
+              <div class="box">2</div>
+            </page-section>
             <div class="blue">Another</div>
-            <page-section class="test" test2 src="../README.md"><div class="red">Test 2</div></page-section>
-            <page-section class="test" test3><div class="red">Test 3</div></page-section>
-            <page-section class="test" test4><div class="red">Test 4</div></page-section>
+            <page-section class="requestoptions test" src="http://www.maximumfun.org/shows/adventure-zone?page=5">
+              <div class="box">Test 2</div>
+            </page-section>
+            <page-section class="test">
+              <div class="box">Test 3</div>
+            </page-section>
+            <page-section class="test">
+              <div class="box">Test 4</div>
+            </page-section>
         </page-sections>
     </body>
     <script type="text/javascript">
+      document.querySelector('.requestoptions').requestOptions = {
+        mode: 'no-cors'
+      }
     </script>
 </html>
