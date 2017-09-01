@@ -122,43 +122,6 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
     this.dispatchEvent(new CustomEvent('deactivated'))
   }
   /**
-  * @method setter src
-  * @description set the src property
-   */
-  set src (src: string) {
-    if (this._src === src) return
-    this._src = src
-
-    fetch(this._src, this.requestOptions)
-    .then(response => response.text())
-    .then(html => {
-      this.innerHTML = html
-    })
-    .catch(console.log)
-  }
-  /**
-  * @method getter src
-  * @description get the src property
-   */
-  get src () {
-    return this._src
-  }
-  /**
-  * @method setter requestOptions
-  * @description set the requestOptions property
-   */
-  set requestOptions (requestOptions: object) {
-    if (this._requestOptions === requestOptions) return
-    this._requestOptions = requestOptions
-  }
-  /**
-   * @method getter requestOptions
-   * @description get the requestOptions property
-   */
-  get requestOptions () {
-    return this._requestOptions || {}
-  }
-  /**
   * @method setter fullscreen
   * @description set the fullscreen property
    */

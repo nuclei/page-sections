@@ -76,11 +76,6 @@ When the `page-section` is in view according to the `requiredVisible` attribute 
 #### activated
 Once the `page-section` has been in view once, the `activated` attribute is added to the `page-section` element.
 
-#### src
-You can add a `src` attribute to a `page-section` to have it `fetch` the resource (which must return some kind of text, e.g. html) and insert it into itself.
-
-This is using `fetch`, so if you want to support browser without `fetch` you will need to include a polyfill.
-
 ## Events
 ### `<page-section>`
 #### activated
