@@ -8,9 +8,6 @@ const makeTemplate = function (strings) {
     return template;
 };
 
-
-//# sourceMappingURL=makeTemplate.js.map
-
 let template = makeTemplate `<style>
     :host{
         display: inline-block;
@@ -97,6 +94,7 @@ let template$1 = makeTemplate `<style>
     }
     :host([centered]) > #content{
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       flex: 1 1 auto;
@@ -109,8 +107,6 @@ let template$1 = makeTemplate `<style>
 class PageSection extends HTMLElement {
     constructor() {
         super();
-        this._src = '';
-        this._requestOptions = null;
         this._fullscreen = false;
         this._maxwidth = null;
         let shadowRoot = this.attachShadow({ mode: 'open' });
@@ -155,28 +151,6 @@ class PageSection extends HTMLElement {
         this.removeAttribute('active');
         this.dispatchEvent(new CustomEvent('deactivated'));
     }
-    set src(src) {
-        if (this._src === src)
-            return;
-        this._src = src;
-        fetch(this._src, this.requestOptions)
-            .then(response => response.text())
-            .then(html => {
-            this.innerHTML = html;
-        })
-            .catch(console.log);
-    }
-    get src() {
-        return this._src;
-    }
-    set requestOptions(requestOptions) {
-        if (this._requestOptions === requestOptions)
-            return;
-        this._requestOptions = requestOptions;
-    }
-    get requestOptions() {
-        return this._requestOptions || {};
-    }
     set fullscreen(fullscreen) {
         if (this._fullscreen === this._isTruthy(fullscreen))
             return;
@@ -218,7 +192,6 @@ class PageSection extends HTMLElement {
 
 window.customElements.define('page-sections', PageSectionContainer);
 window.customElements.define('page-section', PageSection);
-//# sourceMappingURL=page-sections.js.map
 
 }());
 //# sourceMappingURL=page-sections.js.map
