@@ -1,4 +1,4 @@
-/* global HTMLElement CustomEvent fetch*/
+/* global HTMLElement CustomEvent*/
 'use strict'
 
 import { makeTemplate } from '../node_modules/make-template/dist/makeTemplate.js'
@@ -35,8 +35,6 @@ let template = makeTemplate`<style>
 `
 
 export class PageSection extends HTMLElement { // eslint-disable-line no-unused-vars
-  private _src: string = '' // eslint-disable-line no-undef
-  private _requestOptions: object = null  // eslint-disable-line no-undef
   private _fullscreen: boolean = false // eslint-disable-line no-undef
   private _maxwidth: string = null // eslint-disable-line no-undef
 
@@ -150,7 +148,7 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
     if (this._maxwidth === maxwidth) return
     this._maxwidth = maxwidth
 
-    let contentElement = <HTMLElement>this.shadowRoot.querySelector('#content')
+    let contentElement = this.shadowRoot.querySelector('#content') as HTMLElement
 
     if (this._maxwidth !== null && this._maxwidth !== 'none') {
       contentElement.style.maxWidth = maxwidth
