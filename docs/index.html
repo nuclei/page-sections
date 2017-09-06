@@ -51,6 +51,14 @@
               background: #fff;
               box-shadow: 0 0 10px rgba(0,0,0,.15);
             }
+            .css-variables{
+              --page-section-width: 100%;
+              --page-section-height: 500px;
+            }
+            .css-variables-min{
+              --page-section-min-width: 400px;
+              --page-section-min-height: 200px;
+            }
         </style>
     </head>
     <body>
@@ -71,8 +79,11 @@
             <page-section class="test">
               <div class="box">Test 3</div>
             </page-section>
-            <page-section class="test">
-              <div class="box">Test 4</div>
+            <page-section class="css-variables" maxwidth="1000px" centered>
+              <!-- <div class="box">Test 4</div> -->
+            </page-section>
+            <page-section class="css-variables-min" maxwidth="1000px" centered>
+              <!-- <div class="box">Test 4</div> -->
             </page-section>
         </page-sections>
     </body>

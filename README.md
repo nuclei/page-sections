@@ -88,3 +88,40 @@ The `deactivated` event is fired when the `page-section` leaves the view accordi
 The `activated` event is fired when the `page-sections` container is partly visible.
 #### deactivated
 The `deactivated` event is fired when the `page-sections` container has completely left the viewport.
+
+## Available CSS Custom Properties
+The `page-section` has an inner element to allow your content to be centered.
+
+```html
+<page-section>
+  <!-- Shadow -->
+  <div id="content">
+    <slot><!-- Your content is added here --></slot>
+  </div>
+  <!-- Shadow -->
+</page-section>
+```
+
+In some cases it might be necessary to define a height or width for this element. To this end you have the following css custom properties available.
+
+```css
+width: var(--page-section-width, auto);
+height: var(--page-section-height, auto);
+min-width: var(--page-section-min-width, auto);
+min-height: var(--page-section-min-height, auto);
+max-width: var(--page-section-max-width, auto);
+max-height: var(--page-section-max-height, auto);
+```
+
+If you wanted your element to be at least `400px` wide, you could do the following:
+
+```html
+<style media="screen">
+  .min-400{
+    --page-section-min-width: 400px;
+  }
+</style>
+<page-section class="min-400">
+  Your content.
+</page-section>
+```

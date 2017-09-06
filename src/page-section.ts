@@ -29,6 +29,14 @@ let template = makeTemplate`<style>
       justify-content: center;
       flex: 1 1 auto;
     }
+    #content{
+      width: var(--page-section-width, auto);
+      height: var(--page-section-height, auto);
+      min-width: var(--page-section-min-width, auto);
+      min-height: var(--page-section-min-height, auto);
+      max-width: var(--page-section-max-width, auto);
+      max-height: var(--page-section-max-height, auto);
+    }
   </style>
   <div id="content">
     <slot></slot>
