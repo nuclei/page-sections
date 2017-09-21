@@ -46,6 +46,7 @@ let template = makeTemplate`<style>
 export class PageSection extends HTMLElement { // eslint-disable-line no-unused-vars
   private _fullscreen: boolean = false // eslint-disable-line no-undef
   private _maxwidth: string = null // eslint-disable-line no-undef
+  private _minwidth: string = null // eslint-disable-line no-undef
 
   constructor () {
     // If you define a constructor, always call super() first!
@@ -67,7 +68,7 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
   * @description return attributes that should be watched for updates
    */
   static get observedAttributes () {
-    return ['src', 'fullscreen', 'maxwidth']
+    return ['src', 'fullscreen', 'maxwidth', 'minwidth']
   }
   /**
   * @method observedAttributes
@@ -173,6 +174,31 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
    */
   get maxwidth () {
     return this._maxwidth
+  }
+  /**
+  * @method setter minwidth
+  * @description set the minwidth property
+   */
+  set minwidth (minwidth: string) {
+    if (this._minwidth === minwidth) return
+    this._minwidth = minwidth
+
+    let contentElement = this.shadowRoot.querySelector('#content') as HTMLElement
+
+    if (this._minwidth !== null && this._minwidth !== 'none') {
+      contentElement.style.minWidth = minwidth
+      this.setAttribute('minWidth', minwidth)
+    } else {
+      contentElement.style.minWidth = 'auto'
+      this.removeAttribute('minWidth')
+    }
+  }
+  /**
+   * @method getter minwidth
+   * @description get the minwidth property
+   */
+  get minwidth () {
+    return this._minwidth
   }
   /**
    * @method _isTruthy

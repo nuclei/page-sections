@@ -70,6 +70,9 @@ If the `fullscreen` attribute is set on a `page-section`, it fills at least the 
 #### maxwidth
 This attribute makes the content of a `page-section` not extend past the specified `max-width`. Any value that works for `max-width` will be accepted.
 
+#### minwidth
+This attribute makes the content of a `page-section` extend at least to the specified `max-width`. Any value that works for `min-width` will be accepted.
+
 #### active
 When the `page-section` is in view according to the `requiredVisible` attribute the `active` attribute will be added to the `page-section` element. Once it is not in view anymore it will be removed again.
 
