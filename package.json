@@ -1,6 +1,6 @@
 {
   "name": "page-sections",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A simple section solution for your single page or landing page. Vanilla js, no framework dependencies, small footprint.",
   "main": "dist/page-sections.js",
   "config": {
