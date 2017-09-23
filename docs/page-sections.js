@@ -118,6 +118,7 @@ class PageSection extends HTMLElement {
         this._fullscreen = false;
         this._maxwidth = null;
         this._minwidth = null;
+        this._width = null;
         let shadowRoot = this.attachShadow({ mode: 'open' });
         if (typeof ShadyCSS !== 'undefined') {
             ShadyCSS.prepareTemplate(template$1, 'page-section');
@@ -126,7 +127,7 @@ class PageSection extends HTMLElement {
         shadowRoot.appendChild(document.importNode(template$1.content, true));
     }
     static get observedAttributes() {
-        return ['src', 'fullscreen', 'maxwidth', 'minwidth'];
+        return ['src', 'fullscreen', 'maxwidth', 'minwidth', 'width'];
     }
     attributeChangedCallback(attrName, oldVal, newVal) {
         this[attrName] = newVal;
@@ -207,6 +208,23 @@ class PageSection extends HTMLElement {
     }
     get minwidth() {
         return this._minwidth;
+    }
+    set width(width) {
+        if (this._width === width)
+            return;
+        this._width = width;
+        let contentElement = this.shadowRoot.querySelector('#content');
+        if (this._width !== null && this._width !== 'none') {
+            contentElement.style.width = width;
+            this.setAttribute('width', width);
+        }
+        else {
+            contentElement.style.width = 'auto';
+            this.removeAttribute('width');
+        }
+    }
+    get width() {
+        return this._width;
     }
     _isTruthy(value) {
         if (value === true || value === 'true' || value === '') {

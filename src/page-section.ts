@@ -47,7 +47,7 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
   private _fullscreen: boolean = false // eslint-disable-line no-undef
   private _maxwidth: string = null // eslint-disable-line no-undef
   private _minwidth: string = null // eslint-disable-line no-undef
-
+  private _width: string = null // eslint-disable-line no-undef
   constructor () {
     // If you define a constructor, always call super() first!
     // This is specific to CE and required by the spec.
@@ -68,7 +68,7 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
   * @description return attributes that should be watched for updates
    */
   static get observedAttributes () {
-    return ['src', 'fullscreen', 'maxwidth', 'minwidth']
+    return ['src', 'fullscreen', 'maxwidth', 'minwidth', 'width']
   }
   /**
   * @method observedAttributes
@@ -199,6 +199,31 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
    */
   get minwidth () {
     return this._minwidth
+  }
+  /**
+  * @method setter width
+  * @description set the width property
+   */
+  set width (width: string) {
+    if (this._width === width) return
+    this._width = width
+
+    let contentElement = this.shadowRoot.querySelector('#content') as HTMLElement
+
+    if (this._width !== null && this._width !== 'none') {
+      contentElement.style.width = width
+      this.setAttribute('width', width)
+    } else {
+      contentElement.style.width = 'auto'
+      this.removeAttribute('width')
+    }
+  }
+  /**
+   * @method getter width
+   * @description get the width property
+   */
+  get width () {
+    return this._width
   }
   /**
    * @method _isTruthy

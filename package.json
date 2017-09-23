@@ -37,8 +37,9 @@
     "web-component-tester": "^6.1.5"
   },
   "scripts": {
-    "build": "npm test && rollup -c && cp dist/page-sections.js docs/page-sections.js",
-    "build:watch": "npm run build -- -w",
+    "building": "npm test && rollup -c",
+    "build": "npm run building && cp dist/page-sections.js docs/page-sections.js",
+    "build:watch": "npm run building -- -w",
     "test": "standard src/*.ts --parser typescript-eslint-parser | snazzy && tsc src/*.ts --noEmit --pretty --alwaysStrict --allowJs --noUnusedLocals --target ES5 --lib es6,dom && standard-readme",
     "travis": "npm run test "
   }
