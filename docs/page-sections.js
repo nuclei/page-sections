@@ -96,6 +96,7 @@ template$1.innerHTML = `<style>
       flex: 1 1 auto;
     }
     #content{
+      position: relative;
       width: var(--page-section-width, auto);
       height: var(--page-section-height, auto);
       min-width: var(--page-section-min-width, auto);
