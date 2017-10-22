@@ -1,11 +1,11 @@
 /* global HTMLElement CustomEvent*/
 'use strict'
 
-import { makeTemplate } from '../node_modules/make-template/dist/makeTemplate.js'
 declare const ShadyCSS // eslint-disable-line no-unused-vars
-
-let template = makeTemplate`<style>
+let template = document.createElement('template')
+template.innerHTML = `<style>
     :host{
+      position: relative;
       display: flex;
       flex-direction: column;
       flex: 0 1 auto;

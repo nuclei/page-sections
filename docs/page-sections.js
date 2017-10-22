@@ -1,25 +1,19 @@
 (function () {
 'use strict';
 
-const makeTemplate = function (strings) {
-    let html = strings[strings.length - 1];
-    let template = document.createElement('template');
-    template.innerHTML = html;
-    return template;
-};
-
-let template = makeTemplate `<style>
-    :host{
-        display: inline-block;
-        flex: 0 1 auto;
-        box-sizing: border-box;
-        width: 100%;
-        height: auto;
-        min-height: 100vh;
-        align-self: center;
-    }
-  </style>
-  <slot></slot>
+let template = document.createElement('template');
+template.innerHTML = `<style>
+  :host{
+    display: inline-block;
+    flex: 0 1 auto;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    align-self: center;
+  }
+</style>
+<slot></slot>
 `;
 class PageSectionContainer extends HTMLElement {
     constructor() {
@@ -74,8 +68,10 @@ class PageSectionContainer extends HTMLElement {
     }
 }
 
-let template$1 = makeTemplate `<style>
+let template$1 = document.createElement('template');
+template$1.innerHTML = `<style>
     :host{
+      position: relative;
       display: flex;
       flex-direction: column;
       flex: 0 1 auto;

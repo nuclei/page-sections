@@ -24,7 +24,6 @@
   "author": "Lukas Oppermann",
   "license": "MIT",
   "devDependencies": {
-    "make-template": "^1.0.1",
     "rollup": "^0.41.6",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-typescript": "^0.8.1",

@@ -1,21 +1,20 @@
 /* global HTMLElement CustomEvent */
 'use strict'
 
-import { makeTemplate } from '../node_modules/make-template/dist/makeTemplate.js'
 declare const ShadyCSS // eslint-disable-line no-unused-vars
-
-let template = makeTemplate`<style>
-    :host{
-        display: inline-block;
-        flex: 0 1 auto;
-        box-sizing: border-box;
-        width: 100%;
-        height: auto;
-        min-height: 100vh;
-        align-self: center;
-    }
-  </style>
-  <slot></slot>
+let template = document.createElement('template')
+template.innerHTML = `<style>
+  :host{
+    display: inline-block;
+    flex: 0 1 auto;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    align-self: center;
+  }
+</style>
+<slot></slot>
 `
 
 export class PageSectionContainer extends HTMLElement { // eslint-disable-line no-unused-vars
