@@ -1,4 +1,4 @@
-/* global HTMLElement CustomEvent*/
+/* global HTMLElement CustomEvent */
 'use strict'
 
 declare const ShadyCSS // eslint-disable-line no-unused-vars

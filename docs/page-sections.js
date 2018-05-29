@@ -1,8 +1,8 @@
 (function () {
-'use strict';
+    'use strict';
 
-let template = document.createElement('template');
-template.innerHTML = `<style>
+    let template = document.createElement('template');
+    template.innerHTML = `<style>
   :host{
     display: inline-block;
     flex: 0 1 auto;
@@ -15,61 +15,61 @@ template.innerHTML = `<style>
 </style>
 <slot></slot>
 `;
-class PageSectionContainer extends HTMLElement {
-    constructor() {
-        super();
-        let shadowRoot = this.attachShadow({ mode: 'open' });
-        if (typeof ShadyCSS !== 'undefined') {
-            ShadyCSS.prepareTemplate(template, 'page-section-container');
-            ShadyCSS.styleElement(this);
+    class PageSectionContainer extends HTMLElement {
+        constructor() {
+            super();
+            let shadowRoot = this.attachShadow({ mode: 'open' });
+            if (typeof ShadyCSS !== 'undefined') {
+                ShadyCSS.prepareTemplate(template, 'page-section-container');
+                ShadyCSS.styleElement(this);
+            }
+            shadowRoot.appendChild(document.importNode(template.content, true));
         }
-        shadowRoot.appendChild(document.importNode(template.content, true));
-    }
-    connectedCallback() {
-        let element = this;
-        var fn;
-        window.addEventListener('scroll', function () {
-            clearTimeout(fn);
-            fn = setTimeout(function () {
-                element.setActiveState();
-            }, 10);
-        });
-        setTimeout(function () {
-            element.setActiveState();
-        }, 1);
-    }
-    get _inView() {
-        return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight;
-    }
-    setActiveState() {
-        if (this._inView) {
-            this._setActive();
-            Array.prototype.slice.call(this.querySelectorAll('page-section')).map(function (item, index, array) {
-                item.parent = item;
-                item.setActiveState();
+        connectedCallback() {
+            let element = this;
+            var fn;
+            window.addEventListener('scroll', function () {
+                clearTimeout(fn);
+                fn = setTimeout(function () {
+                    element.setActiveState();
+                }, 10);
             });
+            setTimeout(function () {
+                element.setActiveState();
+            }, 1);
         }
-        else {
-            this._setUnactive();
+        get _inView() {
+            return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight;
+        }
+        setActiveState() {
+            if (this._inView) {
+                this._setActive();
+                Array.prototype.slice.call(this.querySelectorAll('page-section')).map(function (item, index, array) {
+                    item.parent = item;
+                    item.setActiveState();
+                });
+            }
+            else {
+                this._setUnactive();
+            }
+        }
+        _setActive() {
+            if (this.hasAttribute('active'))
+                return;
+            this.setAttribute('active', '');
+            this.dispatchEvent(new CustomEvent('activated'));
+        }
+        _setUnactive() {
+            if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
+                this.setAttribute('activated', '');
+            }
+            this.removeAttribute('active');
+            this.dispatchEvent(new CustomEvent('deactivated'));
         }
     }
-    _setActive() {
-        if (this.hasAttribute('active'))
-            return;
-        this.setAttribute('active', '');
-        this.dispatchEvent(new CustomEvent('activated'));
-    }
-    _setUnactive() {
-        if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
-            this.setAttribute('activated', '');
-        }
-        this.removeAttribute('active');
-        this.dispatchEvent(new CustomEvent('deactivated'));
-    }
-}
 
-let template$1 = document.createElement('template');
-template$1.innerHTML = `<style>
+    let template$1 = document.createElement('template');
+    template$1.innerHTML = `<style>
     :host{
       position: relative;
       display: flex;
@@ -109,130 +109,129 @@ template$1.innerHTML = `<style>
     <slot></slot>
   </div>
 `;
-class PageSection extends HTMLElement {
-    constructor() {
-        super();
-        this._fullscreen = false;
-        this._maxwidth = null;
-        this._minwidth = null;
-        this._width = null;
-        let shadowRoot = this.attachShadow({ mode: 'open' });
-        if (typeof ShadyCSS !== 'undefined') {
-            ShadyCSS.prepareTemplate(template$1, 'page-section');
-            ShadyCSS.styleElement(this);
+    class PageSection extends HTMLElement {
+        constructor() {
+            super();
+            this._fullscreen = false;
+            this._maxwidth = null;
+            this._minwidth = null;
+            this._width = null;
+            let shadowRoot = this.attachShadow({ mode: 'open' });
+            if (typeof ShadyCSS !== 'undefined') {
+                ShadyCSS.prepareTemplate(template$1, 'page-section');
+                ShadyCSS.styleElement(this);
+            }
+            shadowRoot.appendChild(document.importNode(template$1.content, true));
         }
-        shadowRoot.appendChild(document.importNode(template$1.content, true));
-    }
-    static get observedAttributes() {
-        return ['src', 'fullscreen', 'maxwidth', 'minwidth', 'width'];
-    }
-    attributeChangedCallback(attrName, oldVal, newVal) {
-        this[attrName] = newVal;
-    }
-    get _inView() {
-        var minVisible = Math.min(1, (parseFloat(this.getAttribute('requiredVisible')) || parseFloat(this.parent.getAttribute('requiredVisible')) || 0.6));
-        var requiredVisiblePx = minVisible * Math.min(this.getBoundingClientRect().height, window.innerHeight);
-        var visibleHeight = this.getBoundingClientRect().height;
-        visibleHeight += Math.min(0, this.getBoundingClientRect().top);
-        visibleHeight -= Math.max(0, (this.getBoundingClientRect().bottom - window.innerHeight));
-        return visibleHeight >= requiredVisiblePx;
-    }
-    setActiveState() {
-        if (this._inView) {
-            this._setActive();
+        static get observedAttributes() {
+            return ['src', 'fullscreen', 'maxwidth', 'minwidth', 'width'];
         }
-        else {
-            this._setUnactive();
+        attributeChangedCallback(attrName, oldVal, newVal) {
+            this[attrName] = newVal;
+        }
+        get _inView() {
+            var minVisible = Math.min(1, (parseFloat(this.getAttribute('requiredVisible')) || parseFloat(this.parent.getAttribute('requiredVisible')) || 0.6));
+            var requiredVisiblePx = minVisible * Math.min(this.getBoundingClientRect().height, window.innerHeight);
+            var visibleHeight = this.getBoundingClientRect().height;
+            visibleHeight += Math.min(0, this.getBoundingClientRect().top);
+            visibleHeight -= Math.max(0, (this.getBoundingClientRect().bottom - window.innerHeight));
+            return visibleHeight >= requiredVisiblePx;
+        }
+        setActiveState() {
+            if (this._inView) {
+                this._setActive();
+            }
+            else {
+                this._setUnactive();
+            }
+        }
+        _setActive() {
+            if (this.hasAttribute('active'))
+                return;
+            this.setAttribute('active', '');
+            this.dispatchEvent(new CustomEvent('activated'));
+        }
+        _setUnactive() {
+            if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
+                this.setAttribute('activated', '');
+            }
+            this.removeAttribute('active');
+            this.dispatchEvent(new CustomEvent('deactivated'));
+        }
+        set fullscreen(fullscreen) {
+            if (this._fullscreen === this._isTruthy(fullscreen))
+                return;
+            this._fullscreen = this._isTruthy(fullscreen);
+            if (this._fullscreen) {
+                this.setAttribute('fullscreen', '');
+            }
+            else {
+                this.removeAttribute('fullscreen');
+            }
+        }
+        get fullscreen() {
+            return this._fullscreen;
+        }
+        set maxwidth(maxwidth) {
+            if (this._maxwidth === maxwidth)
+                return;
+            this._maxwidth = maxwidth;
+            let contentElement = this.shadowRoot.querySelector('#content');
+            if (this._maxwidth !== null && this._maxwidth !== 'none') {
+                contentElement.style.maxWidth = maxwidth;
+                this.setAttribute('maxWidth', maxwidth);
+            }
+            else {
+                contentElement.style.maxWidth = 'auto';
+                this.removeAttribute('maxWidth');
+            }
+        }
+        get maxwidth() {
+            return this._maxwidth;
+        }
+        set minwidth(minwidth) {
+            if (this._minwidth === minwidth)
+                return;
+            this._minwidth = minwidth;
+            let contentElement = this.shadowRoot.querySelector('#content');
+            if (this._minwidth !== null && this._minwidth !== 'none') {
+                contentElement.style.minWidth = minwidth;
+                this.setAttribute('minWidth', minwidth);
+            }
+            else {
+                contentElement.style.minWidth = 'auto';
+                this.removeAttribute('minWidth');
+            }
+        }
+        get minwidth() {
+            return this._minwidth;
+        }
+        set width(width) {
+            if (this._width === width)
+                return;
+            this._width = width;
+            let contentElement = this.shadowRoot.querySelector('#content');
+            if (this._width !== null && this._width !== 'none') {
+                contentElement.style.width = width;
+                this.setAttribute('width', width);
+            }
+            else {
+                contentElement.style.width = 'auto';
+                this.removeAttribute('width');
+            }
+        }
+        get width() {
+            return this._width;
+        }
+        _isTruthy(value) {
+            if (value === true || value === 'true' || value === '') {
+                return true;
+            }
+            return false;
         }
     }
-    _setActive() {
-        if (this.hasAttribute('active'))
-            return;
-        this.setAttribute('active', '');
-        this.dispatchEvent(new CustomEvent('activated'));
-    }
-    _setUnactive() {
-        if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
-            this.setAttribute('activated', '');
-        }
-        this.removeAttribute('active');
-        this.dispatchEvent(new CustomEvent('deactivated'));
-    }
-    set fullscreen(fullscreen) {
-        if (this._fullscreen === this._isTruthy(fullscreen))
-            return;
-        this._fullscreen = this._isTruthy(fullscreen);
-        if (this._fullscreen) {
-            this.setAttribute('fullscreen', '');
-        }
-        else {
-            this.removeAttribute('fullscreen');
-        }
-    }
-    get fullscreen() {
-        return this._fullscreen;
-    }
-    set maxwidth(maxwidth) {
-        if (this._maxwidth === maxwidth)
-            return;
-        this._maxwidth = maxwidth;
-        let contentElement = this.shadowRoot.querySelector('#content');
-        if (this._maxwidth !== null && this._maxwidth !== 'none') {
-            contentElement.style.maxWidth = maxwidth;
-            this.setAttribute('maxWidth', maxwidth);
-        }
-        else {
-            contentElement.style.maxWidth = 'auto';
-            this.removeAttribute('maxWidth');
-        }
-    }
-    get maxwidth() {
-        return this._maxwidth;
-    }
-    set minwidth(minwidth) {
-        if (this._minwidth === minwidth)
-            return;
-        this._minwidth = minwidth;
-        let contentElement = this.shadowRoot.querySelector('#content');
-        if (this._minwidth !== null && this._minwidth !== 'none') {
-            contentElement.style.minWidth = minwidth;
-            this.setAttribute('minWidth', minwidth);
-        }
-        else {
-            contentElement.style.minWidth = 'auto';
-            this.removeAttribute('minWidth');
-        }
-    }
-    get minwidth() {
-        return this._minwidth;
-    }
-    set width(width) {
-        if (this._width === width)
-            return;
-        this._width = width;
-        let contentElement = this.shadowRoot.querySelector('#content');
-        if (this._width !== null && this._width !== 'none') {
-            contentElement.style.width = width;
-            this.setAttribute('width', width);
-        }
-        else {
-            contentElement.style.width = 'auto';
-            this.removeAttribute('width');
-        }
-    }
-    get width() {
-        return this._width;
-    }
-    _isTruthy(value) {
-        if (value === true || value === 'true' || value === '') {
-            return true;
-        }
-        return false;
-    }
-}
 
-window.customElements.define('page-sections', PageSectionContainer);
-window.customElements.define('page-section', PageSection);
+    window.customElements.define('page-sections', PageSectionContainer);
+    window.customElements.define('page-section', PageSection);
 
 }());
-//# sourceMappingURL=page-sections.js.map
