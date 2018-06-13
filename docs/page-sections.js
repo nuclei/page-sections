@@ -1,10 +1,12 @@
 (function () {
     'use strict';
 
+    /* global HTMLElement CustomEvent */
     let template = document.createElement('template');
     template.innerHTML = `<style>
   :host{
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     flex: 0 1 auto;
     box-sizing: border-box;
     width: 100%;
@@ -15,59 +17,97 @@
 </style>
 <slot></slot>
 `;
-    class PageSectionContainer extends HTMLElement {
+    class PageSections extends HTMLElement {
         constructor() {
+            // If you define a constructor, always call super() first!
+            // This is specific to CE and required by the spec.
             super();
+            // create shadowRoot
             let shadowRoot = this.attachShadow({ mode: 'open' });
+            // check if polyfill is used
             if (typeof ShadyCSS !== 'undefined') {
-                ShadyCSS.prepareTemplate(template, 'page-section-container');
-                ShadyCSS.styleElement(this);
+                ShadyCSS.prepareTemplate(template, 'page-sections'); // eslint-disable-line no-undef
+                // apply css polyfill
+                ShadyCSS.styleElement(this); // eslint-disable-line no-undef
             }
+            // add content to shadowRoot
             shadowRoot.appendChild(document.importNode(template.content, true));
         }
+        /**
+        * @method connectedCallback
+        * @description When element is added to DOM
+         */
         connectedCallback() {
             let element = this;
             var fn;
+            // setup scroll event to check for active elements
             window.addEventListener('scroll', function () {
                 clearTimeout(fn);
                 fn = setTimeout(function () {
                     element.setActiveState();
                 }, 10);
             });
+            // initialize activated state
             setTimeout(function () {
                 element.setActiveState();
             }, 1);
         }
+        /**
+         * @method _inView
+         * @description check if element is in view
+         */
         get _inView() {
             return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight;
         }
+        /**
+         * @method setActiveState
+         * @description set _active property & add/remove active attr
+         */
         setActiveState() {
             if (this._inView) {
                 this._setActive();
+                // Get all child elements and activate visible ones
+                // stop once an inactive item follows an active item
                 Array.prototype.slice.call(this.querySelectorAll('page-section')).map(function (item, index, array) {
                     item.parent = item;
                     item.setActiveState();
+                    // abort if current element is NOT in view, but previous was in view
+                    // if (index > 0 && !item.hasAttribute('active') && array[index - 1].hasAttribute('active')) {
+                    //   return
+                    // }
                 });
             }
             else {
                 this._setUnactive();
             }
         }
+        /**
+         * _setActive
+         */
         _setActive() {
             if (this.hasAttribute('active'))
                 return;
+            // set attribute
             this.setAttribute('active', '');
+            // Dispatch the event.
             this.dispatchEvent(new CustomEvent('activated'));
         }
+        /**
+         * _setUnactive
+         */
         _setUnactive() {
+            // set 'wasActivated' attribute, if element was active
             if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
                 this.setAttribute('activated', '');
             }
+            // remove 'active' attribute
             this.removeAttribute('active');
+            // Dispatch the event.
             this.dispatchEvent(new CustomEvent('deactivated'));
         }
     }
 
+    /* global HTMLElement CustomEvent */
     let template$1 = document.createElement('template');
     template$1.innerHTML = `<style>
     :host{
@@ -111,32 +151,60 @@
 `;
     class PageSection extends HTMLElement {
         constructor() {
+            // If you define a constructor, always call super() first!
+            // This is specific to CE and required by the spec.
             super();
-            this._fullscreen = false;
-            this._maxwidth = null;
-            this._minwidth = null;
-            this._width = null;
+            this._fullscreen = false; // eslint-disable-line no-undef
+            this._maxwidth = null; // eslint-disable-line no-undef
+            this._minwidth = null; // eslint-disable-line no-undef
+            this._width = null; // eslint-disable-line no-undef
+            // create shadowRoot
             let shadowRoot = this.attachShadow({ mode: 'open' });
+            // check if polyfill is used
             if (typeof ShadyCSS !== 'undefined') {
-                ShadyCSS.prepareTemplate(template$1, 'page-section');
-                ShadyCSS.styleElement(this);
+                ShadyCSS.prepareTemplate(template$1, 'page-section'); // eslint-disable-line no-undef
+                // apply css polyfill
+                ShadyCSS.styleElement(this); // eslint-disable-line no-undef
             }
+            // add content to shadowRoot
             shadowRoot.appendChild(document.importNode(template$1.content, true));
         }
+        /**
+        * @method observedAttributes
+        * @description return attributes that should be watched for updates
+         */
         static get observedAttributes() {
             return ['src', 'fullscreen', 'maxwidth', 'minwidth', 'width'];
         }
+        /**
+        * @method observedAttributes
+        * @description return attributes that should be watched for updates
+         */
         attributeChangedCallback(attrName, oldVal, newVal) {
             this[attrName] = newVal;
         }
+        /**
+         * @method _inView
+         * @description check if element is in view
+         */
         get _inView() {
-            var minVisible = Math.min(1, (parseFloat(this.getAttribute('requiredVisible')) || parseFloat(this.parent.getAttribute('requiredVisible')) || 0.6));
+            // minimum visible percent of the element to be considered active
+            var minVisible = Math.min(1, (parseFloat(this.getAttribute('requiredVisible')) || parseFloat(this.parent.getAttribute('requiredVisible')) || 0.6)); // eslint-disable-line no-undef
+            // px value of element that can be hidden
             var requiredVisiblePx = minVisible * Math.min(this.getBoundingClientRect().height, window.innerHeight);
+            // calculate visible height
             var visibleHeight = this.getBoundingClientRect().height;
+            // substract part that is outside screen to top
             visibleHeight += Math.min(0, this.getBoundingClientRect().top);
+            // substract part that is outside screen to bottom
             visibleHeight -= Math.max(0, (this.getBoundingClientRect().bottom - window.innerHeight));
+            // return if element is visible or not
             return visibleHeight >= requiredVisiblePx;
         }
+        /**
+         * @method setActiveState
+         * @description set active if in viewport or unactive if not
+         */
         setActiveState() {
             if (this._inView) {
                 this._setActive();
@@ -145,19 +213,34 @@
                 this._setUnactive();
             }
         }
+        /**
+         * _setActive
+         */
         _setActive() {
             if (this.hasAttribute('active'))
                 return;
+            // set attribute
             this.setAttribute('active', '');
+            // Dispatch the event.
             this.dispatchEvent(new CustomEvent('activated'));
         }
+        /**
+         * _setUnactive
+         */
         _setUnactive() {
+            // set 'activated' attribute, if element was active
             if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
                 this.setAttribute('activated', '');
             }
+            // remove 'active' attribute
             this.removeAttribute('active');
+            // Dispatch the event.
             this.dispatchEvent(new CustomEvent('deactivated'));
         }
+        /**
+        * @method setter fullscreen
+        * @description set the fullscreen property
+         */
         set fullscreen(fullscreen) {
             if (this._fullscreen === this._isTruthy(fullscreen))
                 return;
@@ -169,9 +252,17 @@
                 this.removeAttribute('fullscreen');
             }
         }
+        /**
+         * @method getter fullscreen
+         * @description get the fullscreen property
+         */
         get fullscreen() {
             return this._fullscreen;
         }
+        /**
+        * @method setter maxwidth
+        * @description set the maxwidth property
+         */
         set maxwidth(maxwidth) {
             if (this._maxwidth === maxwidth)
                 return;
@@ -186,9 +277,17 @@
                 this.removeAttribute('maxWidth');
             }
         }
+        /**
+         * @method getter maxwidth
+         * @description get the maxwidth property
+         */
         get maxwidth() {
             return this._maxwidth;
         }
+        /**
+        * @method setter minwidth
+        * @description set the minwidth property
+         */
         set minwidth(minwidth) {
             if (this._minwidth === minwidth)
                 return;
@@ -203,9 +302,17 @@
                 this.removeAttribute('minWidth');
             }
         }
+        /**
+         * @method getter minwidth
+         * @description get the minwidth property
+         */
         get minwidth() {
             return this._minwidth;
         }
+        /**
+        * @method setter width
+        * @description set the width property
+         */
         set width(width) {
             if (this._width === width)
                 return;
@@ -220,9 +327,17 @@
                 this.removeAttribute('width');
             }
         }
+        /**
+         * @method getter width
+         * @description get the width property
+         */
         get width() {
             return this._width;
         }
+        /**
+         * @method _isTruthy
+         * @description returns true if value is truthy or empty
+         */
         _isTruthy(value) {
             if (value === true || value === 'true' || value === '') {
                 return true;
@@ -231,7 +346,7 @@
         }
     }
 
-    window.customElements.define('page-sections', PageSectionContainer);
+    window.customElements.define('page-sections', PageSections);
     window.customElements.define('page-section', PageSection);
 
 }());

@@ -5,7 +5,8 @@ declare const ShadyCSS // eslint-disable-line no-unused-vars
 let template = document.createElement('template')
 template.innerHTML = `<style>
   :host{
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     flex: 0 1 auto;
     box-sizing: border-box;
     width: 100%;
@@ -17,7 +18,7 @@ template.innerHTML = `<style>
 <slot></slot>
 `
 
-export class PageSectionContainer extends HTMLElement { // eslint-disable-line no-unused-vars
+export class PageSections extends HTMLElement { // eslint-disable-line no-unused-vars
   constructor () {
     // If you define a constructor, always call super() first!
     // This is specific to CE and required by the spec.
@@ -26,7 +27,7 @@ export class PageSectionContainer extends HTMLElement { // eslint-disable-line n
     let shadowRoot = this.attachShadow({mode: 'open'})
     // check if polyfill is used
     if (typeof ShadyCSS !== 'undefined') {
-      ShadyCSS.prepareTemplate(template, 'page-section-container') // eslint-disable-line no-undef
+      ShadyCSS.prepareTemplate(template, 'page-sections') // eslint-disable-line no-undef
       // apply css polyfill
       ShadyCSS.styleElement(this) // eslint-disable-line no-undef
     }
