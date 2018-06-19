@@ -10,9 +10,8 @@ template.innerHTML = `<style>
       flex-direction: column;
       flex: 0 1 auto;
       box-sizing: border-box;
-      width: 100%;
       height: auto;
-      align-self: center;
+      align-self: auto;
     }
     :host([fullscreen]){
       min-height: 100vh;
