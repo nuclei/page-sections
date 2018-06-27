@@ -16,19 +16,6 @@ export default {
     typescript({
       target: 'ES6'
     }),
-    // typescript({
-    //   typescript: require('typescript'), // use local version
-    //   outDir: 'dist',
-    //   rootDir: './',
-    //   module: 'es6',
-    //   target: 'es6',
-    //   declaration: false,
-    //   removeComments: true,
-    //   lib: [
-    //     'dom',
-    //     'es6'
-    //   ]
-    // }),
     nodeResolve({
       module: true,
       jsnext: true,
