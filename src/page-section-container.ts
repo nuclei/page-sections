@@ -33,6 +33,15 @@ export class PageSections extends HTMLElement { // eslint-disable-line no-unused
     }
     // add content to shadowRoot
     shadowRoot.appendChild(document.importNode(template.content, true))
+    // setup scroll event to check for active elements
+    let element = this
+    let fn
+    window.addEventListener('scroll', function () {
+      clearTimeout(fn)
+      fn = setTimeout(function () {
+        element.setActiveState()
+      }, 10)
+    })
   }
 
   /**
@@ -41,25 +50,10 @@ export class PageSections extends HTMLElement { // eslint-disable-line no-unused
    */
   connectedCallback () {
     let element = this
-    var fn
-    // setup scroll event to check for active elements
-    window.addEventListener('scroll', function () {
-      clearTimeout(fn)
-      fn = setTimeout(function () {
-        element.setActiveState()
-      }, 10)
-    })
     // initialize activated state
     setTimeout(function () {
       element.setActiveState()
     }, 1)
-  }
-  /**
-   * @method _inView
-   * @description check if element is in view
-   */
-  get _inView () {
-    return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight
   }
   /**
    * @method setActiveState
@@ -83,6 +77,63 @@ export class PageSections extends HTMLElement { // eslint-disable-line no-unused
     }
   }
   /**
+   * @method next
+   * @description jump to next page section
+   */
+  public next () {
+    let next = <pageSection> this.getActiveSection().nextElementSibling
+    while (next !== null && next.isPageSection !== true) {
+      next = <pageSection> next.nextElementSibling
+    }
+    if (next !== null && next.isPageSection) {
+      next.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+  /**
+   * @method previous
+   * @description jump to previous page section
+   */
+  public previous () {
+    let previous = <pageSection> this.getActiveSection(true).previousElementSibling
+    while (previous !== null && previous.isPageSection !== true) {
+      previous = <pageSection> previous.previousElementSibling
+    }
+    if (previous !== null && previous.isPageSection) {
+      previous.scrollIntoView({behavior: "smooth"})
+    }
+  }
+  /**
+   * @method goTo
+   * @description jump to specified page section
+   */
+  public goTo (sectionName: string): void {
+    // get desired section
+    let section = <pageSection> this.querySelector('page-section[name='+sectionName+']')
+    // abort if section doesn't exists or is already active
+    if (!section || section.hasAttribute('active')) return;
+    // otherwise move to section
+    section.scrollIntoView({behavior: "smooth"})
+  }
+  /**
+   * @method getActiveSection
+   * @description get the current active section from within this element
+   * @param top (default: false) if true, the first active section will be returned, else the last
+   */
+  public getActiveSection (top: boolean = false): pageSection {
+    let activeItems = Array.from(this.querySelectorAll('page-section[active]'))
+    if (top === false) {
+      return <pageSection> activeItems[activeItems.length - 1]
+    }
+    return <pageSection> activeItems[0]
+  }
+  /**
+   * @method getter isPageSections
+   * @description tells that it is a isPageSections
+   */
+  get isPageSections() {
+    return true
+  }
+  /**
    * _setActive
    */
   private _setActive () {
@@ -104,5 +155,12 @@ export class PageSections extends HTMLElement { // eslint-disable-line no-unused
     this.removeAttribute('active')
     // Dispatch the event.
     this.dispatchEvent(new CustomEvent('deactivated'))
+  }
+  /**
+   * @method _inView
+   * @description check if element is in view
+   */
+  get _inView () {
+    return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight
   }
 }

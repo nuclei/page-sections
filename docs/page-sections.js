@@ -32,6 +32,15 @@
             }
             // add content to shadowRoot
             shadowRoot.appendChild(document.importNode(template.content, true));
+            // setup scroll event to check for active elements
+            let element = this;
+            let fn;
+            window.addEventListener('scroll', function () {
+                clearTimeout(fn);
+                fn = setTimeout(function () {
+                    element.setActiveState();
+                }, 10);
+            });
         }
         /**
         * @method connectedCallback
@@ -39,25 +48,10 @@
          */
         connectedCallback() {
             let element = this;
-            var fn;
-            // setup scroll event to check for active elements
-            window.addEventListener('scroll', function () {
-                clearTimeout(fn);
-                fn = setTimeout(function () {
-                    element.setActiveState();
-                }, 10);
-            });
             // initialize activated state
             setTimeout(function () {
                 element.setActiveState();
             }, 1);
-        }
-        /**
-         * @method _inView
-         * @description check if element is in view
-         */
-        get _inView() {
-            return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight;
         }
         /**
          * @method setActiveState
@@ -82,6 +76,64 @@
             }
         }
         /**
+         * @method next
+         * @description jump to next page section
+         */
+        next() {
+            let next = this.getActiveSection().nextElementSibling;
+            while (next !== null && next.isPageSection !== true) {
+                next = next.nextElementSibling;
+            }
+            if (next !== null && next.isPageSection) {
+                next.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        /**
+         * @method previous
+         * @description jump to previous page section
+         */
+        previous() {
+            let previous = this.getActiveSection(true).previousElementSibling;
+            while (previous !== null && previous.isPageSection !== true) {
+                previous = previous.previousElementSibling;
+            }
+            if (previous !== null && previous.isPageSection) {
+                previous.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+        /**
+         * @method goTo
+         * @description jump to specified page section
+         */
+        goTo(sectionName) {
+            // get desired section
+            let section = this.querySelector('page-section[name=' + sectionName + ']');
+            // abort if section doesn't exists or is already active
+            if (!section || section.hasAttribute('active'))
+                return;
+            // otherwise move to section
+            section.scrollIntoView({ behavior: "smooth" });
+        }
+        /**
+         * @method getActiveSection
+         * @description get the current active section from within this element
+         * @param top (default: false) if true, the first active section will be returned, else the last
+         */
+        getActiveSection(top = false) {
+            let activeItems = Array.from(this.querySelectorAll('page-section[active]'));
+            if (top === false) {
+                return activeItems[activeItems.length - 1];
+            }
+            return activeItems[0];
+        }
+        /**
+         * @method getter isPageSections
+         * @description tells that it is a isPageSections
+         */
+        get isPageSections() {
+            return true;
+        }
+        /**
          * _setActive
          */
         _setActive() {
@@ -104,6 +156,13 @@
             this.removeAttribute('active');
             // Dispatch the event.
             this.dispatchEvent(new CustomEvent('deactivated'));
+        }
+        /**
+         * @method _inView
+         * @description check if element is in view
+         */
+        get _inView() {
+            return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight;
         }
     }
 
@@ -157,6 +216,7 @@
             this._maxwidth = null; // eslint-disable-line no-undef
             this._minwidth = null; // eslint-disable-line no-undef
             this._width = null; // eslint-disable-line no-undef
+            this._parent = null; // eslint-disable-line no-undef
             // create shadowRoot
             let shadowRoot = this.attachShadow({ mode: 'open' });
             // check if polyfill is used
@@ -167,6 +227,13 @@
             }
             // add content to shadowRoot
             shadowRoot.appendChild(document.importNode(template$1.content, true));
+        }
+        /**
+        * @method connectedCallback
+        * @description When element is added to DOM
+         */
+        connectedCallback() {
+            // get the parent page-sections element
         }
         /**
         * @method observedAttributes
@@ -342,6 +409,13 @@
                 return true;
             }
             return false;
+        }
+        /**
+         * @method getter isPageSection
+         * @description tells that it is a isPageSection
+         */
+        get isPageSection() {
+            return true;
         }
     }
 

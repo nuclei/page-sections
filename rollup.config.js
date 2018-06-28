@@ -14,7 +14,8 @@ export default {
   },
   plugins: [
     typescript({
-      target: 'ES6'
+      target: 'ES6',
+      typescript: require('typescript')
     }),
     nodeResolve({
       module: true,
