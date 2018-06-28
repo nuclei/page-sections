@@ -2,8 +2,8 @@
 A simple section solution for your single page or landing page. Vanilla js, no framework dependencies, small footprint.
 
 [![Spec Custom Elements V1](https://img.shields.io/badge/spec-custom%20elements%20v1-F52757.svg?style=flat-square)](https://www.w3.org/TR/custom-elements/)
-[![Build Status](https://img.shields.io/travis/nuclei/page-sections/master.svg?style=flat-square)](https://travis-ci.org/nuclei/page-sections) [![npm](https://img.shields.io/npm/v/page-sections.svg?style=flat-square)](https://www.npmjs.com/package/page-sections)
-[![Known Vulnerabilities](https://snyk.io/test/github/nuclei/page-sections/badge.svg?style=flat-square)](https://snyk.io/test/github/nuclei/page-sections) [![npm](https://img.shields.io/npm/dt/page-sections.svg?style=flat-square)](https://www.npmjs.com/package/page-sections) [![license](https://img.shields.io/github/license/nuclei/page-sections.svg?style=flat-square)](https://github.com/nuclei/page-sections/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/travis/nuclei/page-sections/master.svg?style=flat-square)](https://travis-ci.org/nuclei/page-sections) [![npm](https://img.shields.io/npm/v/@nuclei-components/page-sections.svg?style=flat-square)](https://www.npmjs.com/package/@nuclei-components/page-sections)
+[![Known Vulnerabilities](https://snyk.io/test/github/nuclei/page-sections/badge.svg?style=flat-square)](https://snyk.io/test/github/nuclei/page-sections) [![npm](https://img.shields.io/npm/dt/@nuclei-components/page-sections.svg?style=flat-square)](https://www.npmjs.com/package/@nuclei-components/page-sections) [![license](https://img.shields.io/github/license/nuclei/page-sections.svg?style=flat-square)](https://github.com/nuclei/page-sections/blob/master/LICENSE)
 
 ## Demo
 [Page Sections](https://nuclei.github.io/page-sections/index.html)
