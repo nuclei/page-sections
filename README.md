@@ -82,6 +82,38 @@ When the `page-section` is in view according to the `requiredVisible` attribute 
 #### activated
 Once the `page-section` has been in view once, the `activated` attribute is added to the `page-section` element.
 
+## Methods
+### `<page-sections>` container
+#### next
+When evoked, the `next` method moves the section that follows the currently active section within the selected `<page-sections>` element into view.
+
+This method uses the `scrollIntoView` function with a `smooth` behaviour which defaults to `instant` if not supported.
+
+```js
+  let sections = document.querySelector('page-sections')
+  sections.next() // moves to the next section
+```
+
+#### previous
+When evoked, the `previous` method moves the section that is above the currently active section within the selected `<page-sections>` element into view.
+
+This method uses the `scrollIntoView` function with a `smooth` behaviour which defaults to `instant` if not supported.
+
+```js
+  let sections = document.querySelector('page-sections')
+  sections.previous() // moves to the previous section
+```
+
+#### goTo
+When evoked, the `goTo` method moves the section with the specified `name` attribute within the selected `<page-sections>` element into view. Thus the `goTo` method only works for sections that have a `name` attribute set on them.
+
+This method uses the `scrollIntoView` function with a `smooth` behaviour which defaults to `instant` if not supported.
+
+```js
+  let sections = document.querySelector('page-sections')
+  sections.goTo('sectionName') // moves to the <page-section name="sectionName">
+```
+
 ## Events
 ### `<page-section>`
 #### activated

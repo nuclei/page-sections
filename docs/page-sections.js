@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    /* global HTMLElement CustomEvent */
+    /* global HTMLElement CustomEvent pageSection */
     let template = document.createElement('template');
     template.innerHTML = `<style>
   :host{
@@ -98,7 +98,7 @@
                 previous = previous.previousElementSibling;
             }
             if (previous !== null && previous.isPageSection) {
-                previous.scrollIntoView({ behavior: "smooth" });
+                previous.scrollIntoView({ behavior: 'smooth' });
             }
         }
         /**
@@ -112,7 +112,7 @@
             if (!section || section.hasAttribute('active'))
                 return;
             // otherwise move to section
-            section.scrollIntoView({ behavior: "smooth" });
+            section.scrollIntoView({ behavior: 'smooth' });
         }
         /**
          * @method getActiveSection
@@ -216,7 +216,6 @@
             this._maxwidth = null; // eslint-disable-line no-undef
             this._minwidth = null; // eslint-disable-line no-undef
             this._width = null; // eslint-disable-line no-undef
-            this._parent = null; // eslint-disable-line no-undef
             // create shadowRoot
             let shadowRoot = this.attachShadow({ mode: 'open' });
             // check if polyfill is used

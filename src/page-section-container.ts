@@ -1,4 +1,4 @@
-/* global HTMLElement CustomEvent */
+/* global HTMLElement CustomEvent pageSection */
 'use strict'
 
 declare const ShadyCSS // eslint-disable-line no-unused-vars
@@ -81,9 +81,9 @@ export class PageSections extends HTMLElement { // eslint-disable-line no-unused
    * @description jump to next page section
    */
   public next () {
-    let next = <pageSection> this.getActiveSection().nextElementSibling
+    let next = this.getActiveSection().nextElementSibling as pageSection
     while (next !== null && next.isPageSection !== true) {
-      next = <pageSection> next.nextElementSibling
+      next = next.nextElementSibling as pageSection
     }
     if (next !== null && next.isPageSection) {
       next.scrollIntoView({ behavior: 'smooth' })
@@ -94,12 +94,12 @@ export class PageSections extends HTMLElement { // eslint-disable-line no-unused
    * @description jump to previous page section
    */
   public previous () {
-    let previous = <pageSection> this.getActiveSection(true).previousElementSibling
+    let previous = this.getActiveSection(true).previousElementSibling as pageSection
     while (previous !== null && previous.isPageSection !== true) {
-      previous = <pageSection> previous.previousElementSibling
+      previous = previous.previousElementSibling as pageSection
     }
     if (previous !== null && previous.isPageSection) {
-      previous.scrollIntoView({behavior: "smooth"})
+      previous.scrollIntoView({behavior: 'smooth'})
     }
   }
   /**
@@ -108,11 +108,11 @@ export class PageSections extends HTMLElement { // eslint-disable-line no-unused
    */
   public goTo (sectionName: string): void {
     // get desired section
-    let section = <pageSection> this.querySelector('page-section[name='+sectionName+']')
+    let section = this.querySelector('page-section[name=' + sectionName + ']')
     // abort if section doesn't exists or is already active
-    if (!section || section.hasAttribute('active')) return;
+    if (!section || section.hasAttribute('active')) return
     // otherwise move to section
-    section.scrollIntoView({behavior: "smooth"})
+    section.scrollIntoView({behavior: 'smooth'})
   }
   /**
    * @method getActiveSection
@@ -122,15 +122,15 @@ export class PageSections extends HTMLElement { // eslint-disable-line no-unused
   public getActiveSection (top: boolean = false): pageSection {
     let activeItems = Array.from(this.querySelectorAll('page-section[active]'))
     if (top === false) {
-      return <pageSection> activeItems[activeItems.length - 1]
+      return activeItems[activeItems.length - 1] as pageSection
     }
-    return <pageSection> activeItems[0]
+    return activeItems[0] as pageSection
   }
   /**
    * @method getter isPageSections
    * @description tells that it is a isPageSections
    */
-  get isPageSections() {
+  get isPageSections () {
     return true
   }
   /**

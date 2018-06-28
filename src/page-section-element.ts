@@ -48,7 +48,6 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
   private _maxwidth: string = null // eslint-disable-line no-undef
   private _minwidth: string = null // eslint-disable-line no-undef
   private _width: string = null // eslint-disable-line no-undef
-  private _parent: pageSections = null // eslint-disable-line no-undef
 
   constructor () {
     // If you define a constructor, always call super() first!
