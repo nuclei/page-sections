@@ -126,6 +126,13 @@ The `deactivated` event is fired when the `page-section` leaves the view accordi
 The `activated` event is fired when the `page-sections` container is partly visible.
 #### deactivated
 The `deactivated` event is fired when the `page-sections` container has completely left the viewport.
+#### changeActiveSection
+The `changeActiveSection` event is fired when a `page-section` inside the `page-sections` container is set to active.
+
+The event details `event.detail` are:
+- `section`, the activated section
+- `sectionName`, the name attributes value of the section (if any)
+- `sectionIndex`, the index (starting from 1) of the active section within the current sections container. This only takes into account other `page-section` elements.
 
 ## Available CSS Custom Properties
 The `page-section` has an inner element to allow your content to be centered.
