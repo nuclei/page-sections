@@ -1,3 +1,4 @@
 interface pageSections extends HTMLElement {
-  isPageSections: boolean
+  isPageSections: boolean,
+  _changeActiveSection(section: pageSection)
 }

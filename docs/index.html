@@ -11,8 +11,7 @@
                 padding-bottom: 1000px;
             }
             nav{
-                display: none;
-                position: absolute;
+                position: fixed;
                 top: 0;
                 left: 0;
                 width: 100%;
@@ -27,6 +26,7 @@
             }
             nav div{
                 padding: 15px;
+                float: left;
             }
             .red{
                 font-weight: bold;
@@ -59,11 +59,36 @@
               --page-section-min-width: 400px;
               --page-section-min-height: 200px;
             }
+            menu{
+              display: block;
+              position: relative;
+              height: 50px;
+              float: right;
+              margin: 0 20px;
+            }
+            menu a{
+              float: left;
+              display: block;
+              padding: 16px 10px;
+              cursor: pointer;
+            }
+            menu a:hover{
+              background: rgba(255,255,255,.2);
+            }
+            menu a.active{
+              box-shadow: inset 0 -2px 0 0 yellow;
+            }
         </style>
     </head>
     <body>
         <nav>
-            <div>Page-Sections</div>
+            <div>Page Sections</div>
+            <menu>
+              <a id="prev">prev</a>
+              <a goTo="test">GoTo Test</a>
+              <a goTo="test4">GoTo Test4</a>
+              <a id="next">next</a>
+            </menu>
         </nav>
         <page-sections>
             <page-section centered fullscreen maxwidth="1000px" style="margin: 10px">
@@ -73,7 +98,7 @@
               <div class="box">2</div>
             </page-section>
             <div class="blue">Another</div>
-            <page-section class="requestoptions test">
+            <page-section class="test">
               <div class="box">Test 2</div>
             </page-section>
             <page-section class="test">
@@ -88,8 +113,29 @@
         </page-sections>
     </body>
     <script type="text/javascript">
-      document.querySelector('.requestoptions').requestOptions = {
-        mode: 'no-cors'
-      }
+      let sections = document.querySelector('page-sections')
+      let menuItems = document.querySelectorAll('menu > a')
+      document.querySelector('#next').addEventListener('click', () => {
+        sections.next()
+      })
+      document.querySelector('#prev').addEventListener('click', () => {
+        sections.previous()
+      })
+      document.querySelectorAll('a[goTo]').forEach((link) => {
+        link.addEventListener('click', () => {
+          sections.goTo(link.getAttribute('goTo'))
+        })
+      })
+      sections.addEventListener('changeActiveSection', (event) => {
+        menuItems.forEach((item) => {
+          if (item.getAttribute('goTo') !== null && item.getAttribute('goTo') === event.detail.sectionName) {
+            item.classList.add('active')
+          } else {
+            item.classList.remove('active')
+          }
+
+        })
+
+      })
     </script>
 </html>

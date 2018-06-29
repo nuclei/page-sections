@@ -1,4 +1,4 @@
-/* global HTMLElement CustomEvent */
+/* global HTMLElement CustomEvent pageSections */
 'use strict'
 
 declare const ShadyCSS // eslint-disable-line no-unused-vars
@@ -43,7 +43,7 @@ template.innerHTML = `<style>
   </div>
 `
 
-export class PageSection extends HTMLElement { // eslint-disable-line no-unused-vars
+export class PageSection extends HTMLElement implements pageSection { // eslint-disable-line no-unused-vars
   private _fullscreen: boolean = false // eslint-disable-line no-undef
   private _maxwidth: string = null // eslint-disable-line no-undef
   private _minwidth: string = null // eslint-disable-line no-undef
@@ -119,10 +119,21 @@ export class PageSection extends HTMLElement { // eslint-disable-line no-unused-
    */
   private _setActive () {
     if (this.hasAttribute('active')) return
+    this._parent()._changeActiveSection(this)
     // set attribute
     this.setAttribute('active', '')
     // Dispatch the event.
     this.dispatchEvent(new CustomEvent('activated'))
+  }
+  /**
+   * @method _parent
+   * @description return the parent page-sections element
+   */
+  private _parent (): pageSections {
+    let parent = this.closest('page-sections') as pageSections
+    // abort if no parent found
+    if (parent === null) return null
+    return parent
   }
   /**
    * _setUnactive

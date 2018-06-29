@@ -18,7 +18,7 @@ template.innerHTML = `<style>
 <slot></slot>
 `
 
-export class PageSections extends HTMLElement { // eslint-disable-line no-unused-vars
+export class PageSections extends HTMLElement implements PageSections { // eslint-disable-line no-unused-vars
   constructor () {
     // If you define a constructor, always call super() first!
     // This is specific to CE and required by the spec.
@@ -162,5 +162,18 @@ export class PageSections extends HTMLElement { // eslint-disable-line no-unused
    */
   get _inView () {
     return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight
+  }
+  /**
+   * @method _changeActiveSection
+   * @description fire changeActiveSection event
+   */
+  public _changeActiveSection (section: pageSection) {
+    this.dispatchEvent(new CustomEvent('changeActiveSection', {
+      detail: {
+        section: section,
+        sectionName: section.getAttribute('name'),
+        sectionIndex: Array.from(this.querySelectorAll('page-section')).findIndex((item) => item === section)
+      }
+    }))
   }
 }

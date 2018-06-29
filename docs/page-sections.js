@@ -164,9 +164,22 @@
         get _inView() {
             return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight;
         }
+        /**
+         * @method _changeActiveSection
+         * @description fire changeActiveSection event
+         */
+        _changeActiveSection(section) {
+            this.dispatchEvent(new CustomEvent('changeActiveSection', {
+                detail: {
+                    section: section,
+                    sectionName: section.getAttribute('name'),
+                    sectionIndex: Array.from(this.querySelectorAll('page-section')).findIndex((item) => item === section)
+                }
+            }));
+        }
     }
 
-    /* global HTMLElement CustomEvent */
+    /* global HTMLElement CustomEvent pageSections */
     let template$1 = document.createElement('template');
     template$1.innerHTML = `<style>
     :host{
@@ -284,10 +297,22 @@
         _setActive() {
             if (this.hasAttribute('active'))
                 return;
+            this._parent()._changeActiveSection(this);
             // set attribute
             this.setAttribute('active', '');
             // Dispatch the event.
             this.dispatchEvent(new CustomEvent('activated'));
+        }
+        /**
+         * @method _parent
+         * @description return the parent page-sections element
+         */
+        _parent() {
+            let parent = this.closest('page-sections');
+            // abort if no parent found
+            if (parent === null)
+                return null;
+            return parent;
         }
         /**
          * _setUnactive

@@ -24,6 +24,7 @@
   "author": "Lukas Oppermann",
   "license": "MIT",
   "devDependencies": {
+    "eslint-plugin-typescript": "^0.12.0",
     "rollup": "^0.62.0",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-typescript": "^0.8.1",
@@ -35,11 +36,18 @@
     "typescript-eslint-parser": "^16.0.1",
     "web-component-tester": "^6.7.1"
   },
+  "standard": {
+    "parser": "typescript-eslint-parser",
+    "plugins": [
+      "typescript"
+    ]
+  },
   "scripts": {
     "building": "rollup -c && cp dist/page-sections.js docs/page-sections.js",
     "build": "npm test && npm run building",
     "build:watch": "npm run building -- -w",
-    "test": "standard src/*.ts --parser typescript-eslint-parser | snazzy && tsc --noEmit --pretty --typeRoots './src/types' && standard-readme",
+    "standard": "standard ./src/*.ts | snazzy",
+    "test": "npm run standard && tsc --noEmit --pretty && standard-readme",
     "travis": "npm run test ",
     "preversion": "npm test",
     "version": "npm run build && git add -A dist docs",
