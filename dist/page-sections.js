@@ -85,7 +85,7 @@
                 next = next.nextElementSibling;
             }
             if (next !== null && next.isPageSection) {
-                next.scrollIntoView({ behavior: 'smooth' });
+                next.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
             }
         }
         /**
@@ -98,7 +98,7 @@
                 previous = previous.previousElementSibling;
             }
             if (previous !== null && previous.isPageSection) {
-                previous.scrollIntoView({ behavior: 'smooth' });
+                previous.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
             }
         }
         /**
@@ -112,7 +112,7 @@
             if (!section || section.hasAttribute('active'))
                 return;
             // otherwise move to section
-            section.scrollIntoView({ behavior: 'smooth' });
+            section.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
         }
         /**
          * @method getActiveSection

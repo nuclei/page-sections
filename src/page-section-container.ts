@@ -86,7 +86,7 @@ export class PageSections extends HTMLElement implements PageSections { // eslin
       next = next.nextElementSibling as pageSection
     }
     if (next !== null && next.isPageSection) {
-      next.scrollIntoView({ behavior: 'smooth' })
+      next.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'})
     }
   }
   /**
@@ -99,7 +99,7 @@ export class PageSections extends HTMLElement implements PageSections { // eslin
       previous = previous.previousElementSibling as pageSection
     }
     if (previous !== null && previous.isPageSection) {
-      previous.scrollIntoView({behavior: 'smooth'})
+      previous.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'})
     }
   }
   /**
@@ -112,7 +112,7 @@ export class PageSections extends HTMLElement implements PageSections { // eslin
     // abort if section doesn't exists or is already active
     if (!section || section.hasAttribute('active')) return
     // otherwise move to section
-    section.scrollIntoView({behavior: 'smooth'})
+    section.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'})
   }
   /**
    * @method getActiveSection
