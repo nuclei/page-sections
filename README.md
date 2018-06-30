@@ -1,5 +1,6 @@
 # Page-Sections
-A simple section solution for your single page or landing page. Vanilla js, no framework dependencies, small footprint.
+> A simple section solution for your single page or landing page. Vanilla js, no framework dependencies, small footprint.
+You can easily specify the sections within the container element to be full screen or define a max width. Additionally functionality makes it easy to navigate the sections conveniently.
 
 [![Spec Custom Elements V1](https://img.shields.io/badge/spec-custom%20elements%20v1-F52757.svg?style=flat-square)](https://www.w3.org/TR/custom-elements/)
 [![Build Status](https://img.shields.io/travis/nuclei/page-sections/master.svg?style=flat-square)](https://travis-ci.org/nuclei/page-sections) [![npm](https://img.shields.io/npm/v/@nuclei-components/page-sections.svg?style=flat-square)](https://www.npmjs.com/package/@nuclei-components/page-sections)
