@@ -164,11 +164,26 @@ export class PageSections extends HTMLElement implements PageSections { // eslin
     return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight
   }
   /**
-   * @method _changeActiveSection
-   * @description fire changeActiveSection event
+   * @method _activateSection
+   * @description fire activateSection event
    */
-  public _changeActiveSection (section: pageSection) {
-    this.dispatchEvent(new CustomEvent('changeActiveSection', {
+  public _activateSection (section: pageSection) {
+    // dispatch event
+    this.dispatchEvent(new CustomEvent('activateSection', {
+      detail: {
+        section: section,
+        sectionName: section.getAttribute('name'),
+        sectionIndex: Array.from(this.querySelectorAll('page-section')).findIndex((item) => item === section)
+      }
+    }))
+  }
+  /**
+   * @method _deactivateSection
+   * @description fire deactivateSection event
+   */
+  public _deactivateSection (section: pageSection) {
+    // dispatch event
+    this.dispatchEvent(new CustomEvent('deactivateSection', {
       detail: {
         section: section,
         sectionName: section.getAttribute('name'),

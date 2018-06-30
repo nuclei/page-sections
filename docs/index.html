@@ -87,6 +87,7 @@
               <a id="prev">prev</a>
               <a goTo="test">GoTo Test</a>
               <a goTo="test4">GoTo Test4</a>
+              <a goTo="test5">GoTo Test5</a>
               <a id="next">next</a>
             </menu>
         </nav>
@@ -107,9 +108,14 @@
             <page-section name="test4" class="css-variables" maxwidth="1000px" centered>
               <div class="box">Test 4</div>
             </page-section>
-            <page-section class="css-variables-min" maxwidth="1000px" centered>
-              <div class="box">Test 4</div>
+            <page-section name="test5" class="css-variables-min" maxwidth="1000px" centered>
+              <div class="box">Test 5</div>
             </page-section>
+        </page-sections>
+        <page-sections>
+          <page-section class="css-variables-min" maxwidth="1000px" fullscreen centered>
+            <div class="box">Another section group</div>
+          </page-section>
         </page-sections>
     </body>
     <script type="text/javascript">
@@ -126,16 +132,21 @@
           sections.goTo(link.getAttribute('goTo'))
         })
       })
-      sections.addEventListener('changeActiveSection', (event) => {
+      sections.addEventListener('activateSection', (event) => {
         menuItems.forEach((item) => {
           if (item.getAttribute('goTo') !== null && item.getAttribute('goTo') === event.detail.sectionName) {
             item.classList.add('active')
           } else {
             item.classList.remove('active')
           }
-
         })
-
+      })
+      sections.addEventListener('deactivateSection', (event) => {
+        menuItems.forEach((item) => {
+          if (item.getAttribute('goTo') !== null && item.getAttribute('goTo') === event.detail.sectionName) {
+            item.classList.remove('active')
+          }
+        })
       })
     </script>
 </html>

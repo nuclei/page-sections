@@ -165,11 +165,26 @@
             return this.getBoundingClientRect().bottom > 0 && this.getBoundingClientRect().top < window.innerHeight;
         }
         /**
-         * @method _changeActiveSection
-         * @description fire changeActiveSection event
+         * @method _activateSection
+         * @description fire activateSection event
          */
-        _changeActiveSection(section) {
-            this.dispatchEvent(new CustomEvent('changeActiveSection', {
+        _activateSection(section) {
+            // dispatch event
+            this.dispatchEvent(new CustomEvent('activateSection', {
+                detail: {
+                    section: section,
+                    sectionName: section.getAttribute('name'),
+                    sectionIndex: Array.from(this.querySelectorAll('page-section')).findIndex((item) => item === section)
+                }
+            }));
+        }
+        /**
+         * @method _deactivateSection
+         * @description fire deactivateSection event
+         */
+        _deactivateSection(section) {
+            // dispatch event
+            this.dispatchEvent(new CustomEvent('deactivateSection', {
                 detail: {
                     section: section,
                     sectionName: section.getAttribute('name'),
@@ -297,7 +312,7 @@
         _setActive() {
             if (this.hasAttribute('active'))
                 return;
-            this._parent()._changeActiveSection(this);
+            this._parent()._activateSection(this);
             // set attribute
             this.setAttribute('active', '');
             // Dispatch the event.
@@ -318,6 +333,7 @@
          * _setUnactive
          */
         _setUnactive() {
+            this._parent()._deactivateSection(this);
             // set 'activated' attribute, if element was active
             if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
                 this.setAttribute('activated', '');

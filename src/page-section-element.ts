@@ -119,7 +119,7 @@ export class PageSection extends HTMLElement implements pageSection { // eslint-
    */
   private _setActive () {
     if (this.hasAttribute('active')) return
-    this._parent()._changeActiveSection(this)
+    this._parent()._activateSection(this)
     // set attribute
     this.setAttribute('active', '')
     // Dispatch the event.
@@ -139,6 +139,7 @@ export class PageSection extends HTMLElement implements pageSection { // eslint-
    * _setUnactive
    */
   private _setUnactive () {
+    this._parent()._deactivateSection(this)
     // set 'activated' attribute, if element was active
     if (this.hasAttribute('active') && !this.hasAttribute('activated')) {
       this.setAttribute('activated', '')
